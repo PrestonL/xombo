@@ -67,7 +67,7 @@ class response extends factoryModel {
 	}
 
 	public static function validateResult ($obj, $name, $value) {
-		if (is_array ($value) || is_string ($value) || is_bool ($value) || is_numeric ($value) || is_model ($value))
+		if (is_array ($value) || is_string ($value) || is_bool ($value) || is_numeric ($value) || is_model ($value) || is_iterator ($value))
 			return $value;
 		return NULL;
 	}
@@ -104,6 +104,8 @@ class response extends factoryModel {
 			return ($val === true ? "true" : "false");
 		} else if (is_model ($val)) {
 			return "<" . get_class ($val) . ">" . self::encodeXML ($val->getPublicFields (), get_class ($val))  . "</" . get_class ($val) . ">";
+		} else if (is_iterator ($val)) {
+			return $val->valid () ? self::encodeXML ($val->current ()) . self::encodeXML ($val->next ()) : "";
 		} else if (is_array ($val) && count ($val)) {
 			$noKey = FALSE;
 			if (is_numeric (array_key (array_keys ($val), 0))) {
@@ -127,7 +129,9 @@ class response extends factoryModel {
 	}
 
 	function recurseJSON ($val) {
-		if (is_model ($val)) {
+		if (is_iterator ($val)) {
+			return $val::valid () ? self::recurseJSON ($val::current ()) . self::recurseJSON ($val) : "";
+		} else if (is_model ($val)) {
 			return self::recurseJSON ($val->getPublicFields ());
 		} else if (is_array ($val) && count ($val)) {
 			$return = array ();
@@ -166,3 +170,4 @@ class response extends factoryModel {
 		}
 	}
 }
+

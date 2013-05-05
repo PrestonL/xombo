@@ -25,7 +25,7 @@ abstract class dbModel extends factoryModel {
 		return (string) $value;
 	}
 
-	public static function &select (array $params = array (), $order = array (), $limit = 0, $from = 0, $cache = false) {
+	public static function select (array $params = array (), $order = array (), $limit = 0, $from = 0, $cache = false) {
 		if (!is_array ($order) && is_numeric ($order)) { $cache = $from; $from = $limit; $limit = $order; $order = array (); } // allow skipping of ORDER BY parameter
 		if (!is_numeric ($from) && is_bool ($from)) { $cache = $from; }
 		else if (!is_numeric ($limit) && is_bool ($limit)) { $cache = $limit; }
@@ -50,21 +50,13 @@ abstract class dbModel extends factoryModel {
 		}
 		$results = array ();
 		$result = DB::query ($query, $cache);
-		while ($row = $result->fetch_assoc ()) {
-			$exists = array_key_exists ($row['ID'], static::getAll ());
-			if ($exists) {
-				$results[] = array_key (static::getAll (), $row['ID']);
-			} else {
-				$results[] = static::factory ($row['ID']);
-			}
-		}
-		return $results;
+		return new result (get_called_class (), $result);
 	}
 
 	public static function &getID ($ID = NULL) {
 		$return = NULL;
 		if (is_numeric ($ID) && $ID > 0)
-			$return = array_shift (static::select (array ("ID" => $ID), 1));
+			$return = static::select (array ("ID" => $ID), 1)->current ();
 		if (!is_model ($return)) $return = NULL;
 		return $return;
 	}
