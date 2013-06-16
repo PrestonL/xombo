@@ -1,9 +1,6 @@
 <?php
-abstract class factoryModel extends model {
+abstract class factoryModel extends model implements factoryModelInterface {
 	static $WAREHOUSE;
-
-	abstract public static function init ();
-	abstract public static function &factory ();
 
 	protected static function getCount () {
 		if (!is_array (self::$WAREHOUSE)) return 0;
@@ -19,11 +16,16 @@ abstract class factoryModel extends model {
 	}
 
 	protected static function &store (&$obj) {
+		$class = get_class ($obj);
+		$id = array_key_exists ("ID", $obj->getFields ()) ? array_key ($obj->getFields (), "ID") : array_key_exists ("id", $obj->getFields ()) ? array_key ($obj->getFields (), "id") : NULL;
 		if (!is_array (self::$WAREHOUSE)) self::$WAREHOUSE = array ();
-		if (!array_key_exists (get_class ($obj), self::$WAREHOUSE)) self::$WAREHOUSE[get_class ($obj)] = array ();
-		if (array_key_exists ("ID", $obj->getFields ()) || array_key_exists ("id", $obj->getFields ())) self::$WAREHOUSE[get_class ($obj)][array_key ($obj->getFields (), array_key_exists ("ID", $obj->getFields ()) ? "ID" : "id")] = $obj;
-		else self::$WAREHOUSE[get_class ($obj)][] = $obj;
-		return self::$WAREHOUSE[get_class ($obj)][array_key_exists ("ID", $obj->getFields ()) ? array_key ($obj->getFields (), "ID") : count (self::$WAREHOUSE[get_class ($obj)]) - 1];
+		if (!array_key_exists ($class, self::$WAREHOUSE)) self::$WAREHOUSE[$class] = array ();
+		if (!is_null ($id)) {
+			self::$WAREHOUSE[$class][$id] = $obj;
+		} else {
+			self::$WAREHOUSE[$class][] = $obj;
+		}
+		return self::$WAREHOUSE[$class][!is_null ($id) ? $id : count (self::$WAREHOUSE[$class]) - 1];
 	}
 
 	protected static function shift () {

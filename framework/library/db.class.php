@@ -22,7 +22,7 @@ class db {
 
 	public static function init () {
 		self::$INSTANCE = new db ();
-		$cache = self::mem ()->get ("DB_CACHE");
+		$cache = self::cacheGet ("DB_CACHE");
 		if ($cache !== false) {
 			if (is_array ($cache["TABLES"]))
 				self::$TABLES = $cache["TABLES"];
@@ -44,9 +44,7 @@ class db {
 				"DEFAULTS" => self::$DEFAULTS,
 				"COMMENTS" => self::$COMMENTS
 			);
-			if (!self::mem ()->replace ("DB_CACHE", $cache, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG)) {
-				self::mem ()->set ("DB_CACHE", $cache, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG);
-			}
+			self::cacheSet ("DB_CACHE", $cache);
 		}
 	}
 
@@ -59,26 +57,33 @@ class db {
 	}
 
 	private static function &mem () {
-		if (is_null (self::$MEMCACHE)) {
-			self::$MEMCACHE = new memcache ();
-			self::$MEMCACHE->addServer ("localhost", 11211);
+		if (MEMCACHE_ENABLED) {
+			if (is_null (self::$MEMCACHE)) {
+				self::$MEMCACHE = new memcache ();
+				self::$MEMCACHE->addServer (MEMCACHE_HOSTNAME, 11211);
+			}
+			return self::$MEMCACHE;
 		}
-		return self::$MEMCACHE;
+		return NULL;
 	}
 
 	static function cacheSet ($key, $obj) {
-		if (!self::mem ()->replace ($key, $obj)) {
-			self::mem ()->set ($key, $obj);
+		if (MEMCACHE_ENABLED) {
+			if (!self::mem ()->replace ($key, $obj, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG)) {
+				self::mem ()->set ($key, $obj, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG);
+			}
 		}
 		return $obj;
 	}
 
 	static function cacheGet ($key) {
-		return self::mem ()->get ($key);
+		if (MEMCACHE_ENABLED) return self::mem ()->get ($key);
+		return false;
 	}
 
 	static function cacheDel ($key) {
-		return self::mem ()->delete ($key);
+		if (MEMCACHE_ENABLED) return self::mem ()->delete ($key);
+		return true;
 	}
 
 	static function &query ($query, $cache = false) {
@@ -88,9 +93,7 @@ class db {
 		if ($cache) {
 			// vacuum the result set into memcache if this query is cacheable
 			$result = new memcacheResult ($db_result);
-			if (!self::mem ()->replace ($sum, $result, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH)) {
-				self::mem ()->set ($sum, $result, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH);
-			}
+			self::cacheSet ($sum, $result);
 			return $result;
 		}
 		return $db_result;

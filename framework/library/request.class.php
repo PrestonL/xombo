@@ -1,7 +1,7 @@
 <?php
 class request extends factoryModel {
 
-	public static function getAll () { return parent::getAll (__CLASS__); }
+	public static function &getAll () { return parent::getAll (__CLASS__); }
 	public static function getCount () { return parent::getCount (__CLASS__); }
 
 	public static function init () {

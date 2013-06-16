@@ -26,7 +26,7 @@ class response extends factoryModel {
 			}
 			if (is_model ($class)) {
 				$class = $class . "Controller";
-				if (!class_exists ($class)) eval ("class " . $class . " extends dbModelController { protected static function getModel () { return \"" . $request->getClass () . "\"; } }");
+				if (!class_exists ($class)) eval ("class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getClass () . "\"; } }");
 			}
 			switch (TRUE) {
 				case !class_exists ($class):
@@ -57,7 +57,7 @@ class response extends factoryModel {
 		}
 		return $new;
 	}
-	public static function getAll () { return parent::getAll (__CLASS__); }
+	public static function &getAll () { return parent::getAll (__CLASS__); }
 	public static function getCount () { return parent::getCount (__CLASS__); }
 
 	public static function validateError ($obj, $name, $value) {
@@ -82,7 +82,8 @@ class response extends factoryModel {
 	}
 
 	public static function &factory () {
-		return self::store (new response (func_get_arg (0)));
+		$arg = func_get_arg (0);
+		return self::store (new response ($arg));
 	}
 
 	public function &setError ($code, $message) {
@@ -99,12 +100,12 @@ class response extends factoryModel {
 		return $this->request;
 	}
 
-	function encodeXML (&$val, $namespace = NULL) {
-		if ($val === true || $val === false) {
+	function encodeXML ($val, $namespace = NULL) {
+		if ($val === TRUE || $val === FALSE) {
 			return ($val === true ? "true" : "false");
-		} else if (is_model ($val)) {
+		} else if (is_model ($val, FALSE)) {
 			return "<" . get_class ($val) . ">" . self::encodeXML ($val->getPublicFields (), get_class ($val))  . "</" . get_class ($val) . ">";
-		} else if (is_iterator ($val)) {
+		} else if (is_iterator ($val, FALSE)) {
 			return $val->valid () ? self::encodeXML ($val->current ()) . self::encodeXML ($val->next ()) : "";
 		} else if (is_array ($val) && count ($val)) {
 			$noKey = FALSE;
@@ -123,14 +124,40 @@ class response extends factoryModel {
 		}
 		return "";
 	}
-
+	
 	function encodeJSON ($val, $namespace = NULL) {
+		if ($val === TRUE || $val === FALSE) {
+			return ($val === TRUE ? "true" : "false");
+		} else if (is_model ($val, FALSE)) {
+			return self::encodeJSON ($val->getPublicFields (), get_class ($val));
+		} else if (is_iterator ($val, FALSE)) {
+			return ($namespace == NULL ? "[" : "") . ($val->valid () ? ($namespace == NULL ? "" : ",") . self::encodeJSON ($val->current ()) . self::encodeJSON ($val->next (), TRUE) : "]");
+		} else if (is_array ($val) && count ($val)) {
+			$noKey = FALSE;
+			if (is_numeric (array_key (array_keys ($val), 0))) {
+				if (is_model (array_key (array_values ($val), 0))) {
+					$noKey = TRUE;
+				}
+			}
+			$return = '';
+			foreach ($val as $key => $v) {
+				if (!empty ($return)) $return .= ',';
+				$return .= ($noKey ? '' : '"' . addslashes($key) . '":' . self::encodeJSON ($v));
+			}
+			return '{' . $return . '}';
+		} else if (!is_array ($val)) {
+			return '"' . (string) addslashes ($val) . '"';
+		}
+		return '';
+	}
+
+/*	function encodeJSON ($val, $namespace = NULL) {
 		return json_encode (self::recurseJSON ($val));
 	}
 
 	function recurseJSON ($val) {
 		if (is_iterator ($val)) {
-			return $val::valid () ? self::recurseJSON ($val::current ()) . self::recurseJSON ($val) : "";
+			return $val->valid () ? self::recurseJSON ($val->current ()) . self::recurseJSON ($val) : "";
 		} else if (is_model ($val)) {
 			return self::recurseJSON ($val->getPublicFields ());
 		} else if (is_array ($val) && count ($val)) {
@@ -144,7 +171,7 @@ class response extends factoryModel {
 		}
 		return $val;
 	}
-
+*/
 	public function __toString () {
 		try {
 			static $codes = array (

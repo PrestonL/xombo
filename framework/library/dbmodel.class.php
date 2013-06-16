@@ -1,15 +1,12 @@
 <?php
-abstract class dbModel extends factoryModel {
+abstract class dbModel extends factoryModel implements dbModelInterface {
 
 	private $dbModelState;
 	private $dontSaveChanges = FALSE;
 
-	abstract public static function getTable ();
-	abstract public static function isCacheable ();
-
 	public static function init () { return; }
 
-	private function getChildTable () {
+	private static function getChildTable () {
 		return static::getTable ();
 	}
 

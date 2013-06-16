@@ -1,7 +1,5 @@
 <?php
-abstract class dbModelController extends controller {
-
-	abstract protected static function getModel ();
+abstract class dbModelController extends controller implements dbModelControllerInterface {
 
 	private static function getModelByID ($ID) {
 		$obj = call_user_func (static::getModel () . "::getID", $ID);
