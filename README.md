@@ -8,4 +8,7 @@ XOMBO is a web application framework for building API-driven AJAX web applicatio
 
 * Wiki: [https://github.com/nolteb/xombo/wiki]
 
-* Issue Tracking: [https://github.com/nolteb/xombo/issues]
+* Development Tracker: [https://trello.com/b/TkPmvvWO]
+
+* Bug Reporting: [https://github.com/nolteb/xombo/issues]
+
