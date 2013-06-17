@@ -15,7 +15,9 @@ class session {
 		}
 	}
 	public static function init () {
-		self::$INSTANCE = new session ();
+		if (is_null (self::$INSTANCE)) {
+			self::$INSTANCE = new session ();
+		}
 	}
 	public function login ($user) {
 		$_SESSION['user'] = $user;
@@ -32,10 +34,10 @@ class session {
 		}
 		return false;
 	}
-	public function active () {
+	public static function active () {
 		return !is_null (self::get ()) && self::verify () ? true : false;
 	}
-	public function &get () {
+	public static function &get () {
 		if (is_null (self::$USER))
 			self::$USER = array_key_exists ("user", $_SESSION) ? $_SESSION['user'] : NULL;
 		return self::$USER;

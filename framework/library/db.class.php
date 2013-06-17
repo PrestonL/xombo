@@ -90,7 +90,7 @@ class db {
 		// $cache -- determines if it should attempt query via memcache; not the internal, non-persistant query cache
 		$sum = md5 ($query);
 		$db_result = self::conn ()->query ($query);
-		if ($cache) {
+		if ($cache && MEMCACHE_ENABLED) {
 			// vacuum the result set into memcache if this query is cacheable
 			$result = new memcacheResult ($db_result);
 			self::cacheSet ($sum, $result);

@@ -151,27 +151,6 @@ class response extends factoryModel {
 		return '';
 	}
 
-/*	function encodeJSON ($val, $namespace = NULL) {
-		return json_encode (self::recurseJSON ($val));
-	}
-
-	function recurseJSON ($val) {
-		if (is_iterator ($val)) {
-			return $val->valid () ? self::recurseJSON ($val->current ()) . self::recurseJSON ($val) : "";
-		} else if (is_model ($val)) {
-			return self::recurseJSON ($val->getPublicFields ());
-		} else if (is_array ($val) && count ($val)) {
-			$return = array ();
-			foreach ($val as $key => $val) {
-				if (is_numeric ($key))
-					$return[] = self::recurseJSON ($val);
-				else $return[$key] = self::recurseJSON ($val);
-			}
-			return $return;
-		}
-		return $val;
-	}
-*/
 	public function __toString () {
 		try {
 			static $codes = array (

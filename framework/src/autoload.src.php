@@ -20,8 +20,8 @@ spl_autoload_register (function ($class) {
 				$return = self::store (new ' . $class . ' ());
 				return $return;
 			}
-			public function addField ($name, $default = NULL, $validator = NULL) {
-				parent::addField ($name, $default, $validator);
+			public function &addField ($name, $default = NULL, $validator = NULL) {
+				return parent::addField ($name, $default, $validator);
 			}
 		}');
 	}

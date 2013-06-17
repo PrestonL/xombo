@@ -8,6 +8,10 @@ define ('DB_PASSWORD',	'');
 define ('DB_HOSTNAME',	'p:localhost');
 define ('DB_SCHEMA',	'rokyt');
 
+// memcache configuration
+define ('MEMCACHE_ENABLED', false);
+define ('MEMCACHE_HOSTNAME', 'localhost');
+
 // session configuration
 define ('SESSION_COOKIE', 'AUTHKEY');
 define ('SESSION_LIFETIME', 31556926); // 1 year
