@@ -6,7 +6,7 @@ define ('SITE_DOMAIN', 'framework.xombo.com');
 define ('DB_USERNAME',	'root');
 define ('DB_PASSWORD',	'');
 define ('DB_HOSTNAME',	'p:localhost');
-define ('DB_SCHEMA',	'rokyt');
+define ('DB_SCHEMA',	'xombo');
 
 // memcache configuration
 define ('MEMCACHE_ENABLED', false);
