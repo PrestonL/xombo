@@ -40,7 +40,7 @@ abstract class controller extends model {
 							self::$xsl
 						);
 			// remove variable document tag
-			//self::$xsl = preg_replace ('/(\<xsl:variable name=\")([a-zA-Z0-9\.\-\_]+)(\")([\s]+)(select=\")(document\(\\\')([a-zA-Z0-9\.\-\_\/]+)(\\\'\))([a-zA-Z0-9\.\-\_\/]+)(\")([\s]*)(\/\>)/', "", self::$xsl);
+			self::$xsl = preg_replace ('/(\<xsl:variable name=\")([a-zA-Z0-9\.\-\_]+)(\")([\s]+)(select=\")(document\(\\\')([a-zA-Z0-9\.\-\_\/]+)(\\\'\))([a-zA-Z0-9\.\-\_\/]+)(\")([\s]*)(\/\>)/', "", self::$xsl);
 		}
 		echo self::$xsl;
 		if ($return) return ob_get_clean ();
