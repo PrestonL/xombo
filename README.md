@@ -3,6 +3,11 @@ XOMBO
 
 XOMBO is a web application framework for building API-driven AJAX web applications that degrade gracefully for old browsers, search engines, and the disabled.
 
+Status
+======
+
+This project is a work-in-progress. Mission-critical applications should wait until the development API and documentation is formalized.
+
 Links
 =====
 
