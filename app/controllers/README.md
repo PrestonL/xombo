@@ -1,1 +1,4 @@
-# This folder contains your custom application controllers.
+Controllers
+===========
+
+This folder contains your custom application controllers.
