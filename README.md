@@ -13,7 +13,7 @@ Links
 
 * Homepage	http://xombo.com/
 
-* Wiki	https://github.com/nolteb/xombo/wiki
+* Installation Instructions	https://github.com/nolteb/xombo/wiki/Installation-Instructions-%28Ubuntu-Linux%29
 
 * Development Tracker	https://trello.com/b/TkPmvvWO
 
