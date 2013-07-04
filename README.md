@@ -1,7 +1,7 @@
 XOMBO
 =====
 
-XOMBO is a web application framework for building API-driven AJAX web applications that degrade gracefully for old browsers, search engines, and the disabled.
+XOMBO is a PHP web application framework for building API-driven AJAX web applications that degrade gracefully for older browsers, search engines, and the disabled.
 
 Status
 ======
