@@ -6,7 +6,7 @@ XOMBO is a PHP web application framework for building API-driven AJAX web applic
 Status
 ======
 
-This project is a work-in-progress. Mission-critical applications should wait until the development API and documentation is formalized.
+This project is a work-in-progress. Mission-critical applications should wait until the development API and documentation are formalized.
 
 Links
 =====
@@ -18,16 +18,6 @@ Links
 * Development Tracker	https://trello.com/b/TkPmvvWO
 
 * Issue Reporting	https://github.com/nolteb/xombo/issues
-
-Projects Using XOMBO
-====================
-
-* ROK.YT	http://rok.yt/
-
-* The Fire Horn http://thefirehorn.com/
-
-* Time Dime	http://timedime.com/
-
 
 License
 =======
