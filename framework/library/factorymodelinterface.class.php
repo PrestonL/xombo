@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 interface factoryModelInterface {
 	static function init ();
 	static function &factory ();

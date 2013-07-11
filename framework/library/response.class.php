@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 class response extends factoryModel {
 	const VERSION = "2.0";
 	private $request;
@@ -40,22 +41,31 @@ class response extends factoryModel {
 	public static function &process ($request, $return = TRUE) {
 		$new = NULL;
 		try {
-			$class = $request->getClass ();
-			if (empty ($class)) {
-				$class = "defaultController";
-				$request->class = $class;
+			if ($request->getClass () == "") {
+				if (class_exists ("defaultController")) {
+					$request->namespace = "";
+					$request->class ="defaultController";
+				} else {
+					$request->namespace = "XOMBO";
+					$request->class = "defaultController";
+				}
 			}
-			if (is_model ($class)) {
-				$class = $class . "Controller";
-				if (!class_exists ($class)) eval ("class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getClass () . "\"; } }");
+			if (!class_exists ($request->getClass ()) && class_exists ("XOMBO\\" . $request->getClass ())) {
+				$request->namespace = "XOMBO";
+			}
+			$path = $request->getNamespace () != "" ? $request->getNamespace () . "\\" : "";
+			$class = $request->getClass ();
+			if (is_model ($path . $class) && !is_controller ($path . $class)) {
+				$class .= "Controller";
+				if (!class_exists ($class)) eval ("namespace XOMBO; class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getNamespace () . "\\" . $request->getClass () . "\"; } }");
 			}
 			switch (TRUE) {
-				case !class_exists ($class):
-					throw new exception ("Class does not exist");
-				case !is_controller ($class):
-					throw new exception ("Class does not extend Controller");
-				case !empty ($class) && array_key_exists ("method", $request->getFields ()) && !method_exists ($class, $request->getMethod ()):
-					throw new exception ("Method does not exist");
+				case !class_exists ($path . $class):
+					throw new \exception ("Class does not exist", 404);
+				case !is_controller ($path . $class):
+					throw new \exception ("Class does not extend Controller", 404);
+				case $path . $class != "" && array_key_exists ("method", $request->getFields ()) && !method_exists ($path . $class, $request->getMethod ()):
+					throw new \exception ("Method does not exist", 404);
 				break;
 				case !array_key_exists ("method", $request->getFields ()):
 					$request->addField ("method", "describe");
@@ -65,16 +75,16 @@ class response extends factoryModel {
 					} else {
 						$new = self::factory ($request);
 					}
-					$new->setResult (call_user_func_array ($class . "::" . $request->getMethod (), count ($request->getParams ()) ? $request->getParams () : array (NULL)));
+					$new->setResult (call_user_func_array ($path . $class . "::" . $request->getMethod (), count ($request->getParams ()) ? $request->getParams () : array (NULL)));
 				break;
 			}
-		} catch (exception $e) {
+		} catch (\exception $e) {
 			if ($return) {
 				$new = new response ($request);
 			} else {
 				$new = self::factory ($request);
 			}
-			$new->setError (500, $e->getMessage () . (array_key_exists ("debug", $_REQUEST) ? " " . $e->getFile () . "(" . $e->getLine () . ") " . $e->getTraceAsString () : ""));
+			$new->setError ($e->getCode (), $e->getMessage () . (array_key_exists ("debug", $_REQUEST) ? " " . $e->getFile () . "(" . $e->getLine () . ") " . $e->getTraceAsString () : ""));
 		}
 		return $new;
 	}
@@ -125,7 +135,8 @@ class response extends factoryModel {
 		if ($val === TRUE || $val === FALSE) {
 			return ($val === true ? "true" : "false");
 		} else if (is_model ($val, FALSE)) {
-			return "<" . get_class ($val) . ">" . self::encodeXML ($val->getPublicFields (), get_class ($val))  . "</" . get_class ($val) . ">";
+			$class = array_pop (explode ("\\", get_class ($val)));
+			return "<" . $class . ">" . self::encodeXML ($val->getPublicFields (), $class)  . "</" . $class . ">";
 		} else if (is_iterator ($val, FALSE)) {
 			return $val->valid () ? self::encodeXML ($val->current ()) . self::encodeXML ($val->next ()) : "";
 		} else if (is_array ($val) && count ($val)) {
@@ -190,7 +201,7 @@ class response extends factoryModel {
 				header ("HTTP/1.1 " . $this->error["code"] . " " . (array_key_exists ($this->error["code"], $codes) ? $codes[$this->error["code"]] : "OK"));
 			}
 			return array_key_exists ("json", $_REQUEST) ? self::encodeJSON ($this) : self::encodeXML ($this) . "\n<!--<![CDATA[     See something? Say something! Help us improve support for your browser, here: http://rok.yt/10Z8N9     ]]>//-->";
-		} catch (exception $e) {
+		} catch (\exception $e) {
 			ob_end_clean ();
 			var_dump (debug_backtrace ());
 			die ();

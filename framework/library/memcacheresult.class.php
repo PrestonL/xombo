@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 class memcacheResult {
 	private $result;
 	public $num_rows;

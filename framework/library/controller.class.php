@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 abstract class controller extends model {
 	private static $xsl = "";
 	public static function describe () {
@@ -27,7 +28,7 @@ abstract class controller extends model {
 		$return = array ();
 		foreach ($methods as $method) {
 			if (strpos ($method, "__") !== 0) {
-				$reflection = new reflectionMethod (get_called_class (), $method);
+				$reflection = new \reflectionMethod (get_called_class (), $method);
 				if ($reflection->isPublic ())
 					$return[$method] = "method";
 			}
@@ -99,7 +100,7 @@ abstract class controller extends model {
 				if ($ret->length)
 					return ($ret->item (0)->nodeValue);
 			}
-		} catch (exception $e) {
+		} catch (\exception $e) {
 			return "";
 		}
 	}

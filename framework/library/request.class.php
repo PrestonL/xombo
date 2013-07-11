@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 class request extends factoryModel {
 
 	public static function &getAll () { return parent::getAll (__CLASS__); }
@@ -47,7 +48,7 @@ class request extends factoryModel {
 		return self::store (new request (func_get_arg (0)));
 	}
 
-
+	public function getNamespace () { return $this->namespace; }
 	public function getClass () { return $this->class; }
 	public function getMethod () { return $this->method; }
 	public function setMethod ($method) { $this->method = $method; }
@@ -56,6 +57,7 @@ class request extends factoryModel {
 	public function __construct ($path = NULL) {
 		$this->addField ("ID", self::getCount ());
 		$args = is_string ($path) ? explode ('/', trim ($path, '/')) : array ();
+		$this->addField ("namespace", "");
 		if (count ($args)) $this->addField ("class", urldecode (array_shift ($args)));
 		if (count ($args)) $this->addField ("method", urldecode (array_shift ($args)));
 		$this->addField ("params", count ($args) ? $args : array (), "validateParams");
