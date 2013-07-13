@@ -20,24 +20,27 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 abstract class factoryModel extends model implements factoryModelInterface {
 	static $WAREHOUSE;
 
 	protected static function getCount () {
+		$class = array_pop (explode ("\\", get_called_class ()));
 		if (!is_array (self::$WAREHOUSE)) return 0;
-		return array_key_exists (get_called_class (), self::$WAREHOUSE) ? count (self::$WAREHOUSE[get_called_class ()]) : 0;
+		return array_key_exists ($class, self::$WAREHOUSE) ? count (self::$WAREHOUSE[$class]) : 0;
 	}
 
 	protected static function &getAll () {
+		$class = array_pop (explode ("\\", get_called_class ()));
 		if (!is_array (self::$WAREHOUSE)) self::$WAREHOUSE = array ();
-		if (array_key_exists (get_called_class (), self::$WAREHOUSE))
-			return self::$WAREHOUSE[get_called_class ()];
+		if (array_key_exists ($class, self::$WAREHOUSE))
+			return self::$WAREHOUSE[$class];
 		$blank = array ();
 		return $blank;
 	}
 
 	protected static function &store (&$obj) {
-		$class = get_class ($obj);
+		$class = array_pop (explode ("\\", get_class ($obj)));
 		$id = array_key_exists ("ID", $obj->getFields ()) ? array_key ($obj->getFields (), "ID") : array_key_exists ("id", $obj->getFields ()) ? array_key ($obj->getFields (), "id") : NULL;
 		if (!is_array (self::$WAREHOUSE)) self::$WAREHOUSE = array ();
 		if (!array_key_exists ($class, self::$WAREHOUSE)) self::$WAREHOUSE[$class] = array ();
@@ -50,8 +53,9 @@ abstract class factoryModel extends model implements factoryModelInterface {
 	}
 
 	protected static function shift () {
-		if (array_key_exists (get_called_class (), self::$WAREHOUSE) && count (self::$WAREHOUSE[get_called_class ()]))
-			return array_shift (self::$WAREHOUSE[get_called_class ()]);
+		$class = array_pop (explode ("\\", get_called_class ()));
+		if (array_key_exists ($class, self::$WAREHOUSE) && count (self::$WAREHOUSE[$class]))
+			return array_shift (self::$WAREHOUSE[$class]);
 		return NULL;
 	}
 }

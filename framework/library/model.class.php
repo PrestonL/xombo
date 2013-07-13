@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 abstract class model {
 	private $properties;
 	private $validators;
@@ -43,7 +44,7 @@ abstract class model {
 			unset ($this->validators[$name]);
 			return $this;
 		}
-		throw new exception ("Property does not exist");
+		throw new \exception ("Property does not exist");
 		return $this;
 	}
 
@@ -52,7 +53,7 @@ abstract class model {
 			$this->hiddenFields[$name] = true;
 			return $this;
 		}
-		throw new exception ("Property does not exist");
+		throw new \exception ("Property does not exist");
 		return $this;
 	}
 
@@ -67,7 +68,8 @@ abstract class model {
 	}
 
 	protected function validate ($name, $value) {
-		return call_user_func (get_class ($this) . "::" . (array_key_exists ($name, $this->validators) && !is_null ($this->validators[$name]) ? $this->validators[$name] : "validatorDefault"), $this, $name, $value);
+		$ret = call_user_func (get_class ($this) . "::" . (array_key_exists ($name, $this->validators) && !is_null ($this->validators[$name]) ? $this->validators[$name] : "validatorDefault"), $this, $name, $value);
+		return $ret;
 	}
 
 	protected static function validatorDefault ($obj, $field, $value) { // validator prototype
@@ -88,9 +90,9 @@ abstract class model {
 			$this->properties[$name] = $this->validate ($name, $value);
 			if (!is_null ($this->properties[$name])) return TRUE;
 			$this->properties[$name] = $old;
-			throw new exception ("You tried to set " . get_class ($this) . "'s property " . $name . " to " . $value . ", which did not validate. You may have entered something incorrectly. Click back and try again.");
+			throw new \exception ("You tried to set " . get_class ($this) . "'s property " . $name . " to " . $value . ", which did not validate. You may have entered something incorrectly. Click back and try again.");
 		}
-		throw new exception ("You tried to set a value to " . $name . " when " . $name . " does not exist as a field in this context.");
+		throw new \exception ("You tried to set a value to " . $name . " when " . $name . " does not exist as a field in this context.");
 		return FALSE;
 	}
 }

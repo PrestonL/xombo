@@ -20,7 +20,8 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
-class result implements iterator {
+namespace XOMBO;
+class result implements \iterator {
 	private $classname;
 	private $data;
 	private $position;
@@ -36,7 +37,7 @@ class result implements iterator {
 		$this->data->data_seek (0);
 	}
 	public function current () {
-		return call_user_func ($this->classname . '::factory', array_key ($this->data->fetch_assoc (), 'ID'));
+		return new $this->classname (array_key ($this->data->fetch_assoc (), 'ID'));
 	}
 	public function __destruct () {
 		$this->data->free ();

@@ -21,9 +21,8 @@
  * 	limitations under the License.
  */
 function main () {
-
-	if (count (response::getAll ()) == 0)
-		response::factory ()->setError (404, "No results to display");
+	if (count (XOMBO\response::getAll ()) == 0)
+		XOMBO\response::factory (new XOMBO\request ())->setError (404, "No results to display");
 
 	header ("Content-Type: " . (array_key_exists ("json", $_REQUEST) ? "application/javascript" : (array_key_exists ("html", $_REQUEST) ? "text/html" : "application/xhtml+xml")));
 
@@ -32,16 +31,24 @@ function main () {
 	$callback = array_key_exists ("json", $_REQUEST) && array_key_exists ("callback", $_REQUEST) ? $_REQUEST["callback"] : NULL;
 	echo !array_key_exists ("json", $_REQUEST) ? "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" : (is_string ($callback) ? $callback . " (" : "");
 	if (array_key_exists ("html", $_REQUEST) && !array_key_exists ("json", $_REQUEST))
-		$xsl = call_user_func ((is_model (array_key (response::getAll (), 0)->getRequest ()->getClass ()) ? array_key (response::getAll (), 0)->getRequest ()->getClass () . "Controller" : array_key (response::getAll (), 0)->getRequest ()->getClass ()) . "::xsl", TRUE);
+		$xsl = call_user_func (
+					(
+						is_model ((array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass ()) ? 
+							(array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass () . "Controller"
+							 : 
+							(array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass ()
+					)
+					 . "::xsl"
+				, TRUE);
 
-	if (count (response::getAll ()) == 1) {
-		$response = array_pop (response::getAll ());
+	if (count (XOMBO\response::getAll ()) == 1) {
+		$response = array_pop (XOMBO\response::getAll ());
 		if (!array_key_exists ("json", $_REQUEST)) echo "<?xml-stylesheet type=\"text/xsl\" href=\"/" . $response->getRequest ()->getClass () . "/xsl\" ?>\n";
 		echo $response;
 	} else {
 		$first = TRUE;
-		echo !array_key_exists ("json", $_REQUEST) ? "<?xml-stylesheet type=\"text/xsl\" href=\"/" . array_key (response::getAll (), 0)->getRequest ()->getClass () . "/xsl\" ?>\n<responses>\n" : "[";
-		while ($r = response::shift ()) {
+		echo !array_key_exists ("json", $_REQUEST) ? "<?xml-stylesheet type=\"text/xsl\" href=\"/" . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass () . "/xsl\" ?>\n<responses>\n" : "[";
+		while ($r = XOMBO\response::shift ()) {
 			if ($first) $first = FALSE;
 			else echo !array_key_exists ("json", $_REQUEST) ? "" : ",";
 			echo $r;

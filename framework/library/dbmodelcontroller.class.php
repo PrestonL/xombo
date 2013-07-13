@@ -20,12 +20,13 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 abstract class dbModelController extends controller implements dbModelControllerInterface {
 
 	private static function getModelByID ($ID) {
 		$obj = call_user_func (static::getModel () . "::getID", $ID);
 		if (!is_model ($obj))
-			throw new exception ("The selected ID could not be found.");
+			throw new \exception ("The selected ID could not be found.");
 		return $obj;
 	}
 
@@ -41,10 +42,10 @@ abstract class dbModelController extends controller implements dbModelController
 				if (array_key_exists (func_get_arg ($i), $obj->getFields ()))
 					$query[func_get_arg ($i)] = func_get_arg ($i + 1);
 				else
-					throw new exception ("Property " . func_get_arg ($i) . " does not exist");
+					throw new \exception ("Property " . func_get_arg ($i) . " does not exist");
 			}
 		} else if (func_get_arg (0) !== NULL) {
-			throw new exception ("Mismatched key/value pairs");
+			throw new \exception ("Mismatched key/value pairs");
 		}
 		return call_user_func (static::getModel () . "::select", $query);
 	}
@@ -64,9 +65,9 @@ abstract class dbModelController extends controller implements dbModelController
 			if (array_key_exists ($args[$i], $obj->getFields ()))
 				$obj->{$args[$i]} = $args[$i + 1];
 			else
-				throw new exception ("Property " . $args[$i] . " does not exist");
+				throw new \exception ("Property " . $args[$i] . " does not exist");
 		} else {
-			throw new exception ("Mismatched key/value pairs");
+			throw new \exception ("Mismatched key/value pairs");
 		}
 		return $obj->save ();
 	}

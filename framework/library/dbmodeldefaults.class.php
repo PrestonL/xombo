@@ -20,10 +20,11 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 abstract class dbModelDefaults extends dbModel {
 
 	public static function getTable () {
-		return strtolower (get_called_class ());
+		return strtolower (array_pop (explode ("\\", get_called_class ())));
 	}
 
 	public static function isCacheable () {

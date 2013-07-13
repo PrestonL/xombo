@@ -20,8 +20,11 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 class defaultController extends controller {
 	public static function describe () {
-		return array_combine (DB::allTables (), array_pad (array (), count (DB::allTables ()), "class"));
+		if (count (DB::allTables ()))
+			return array_combine (DB::allTables (), array_pad (array (), count (DB::allTables ()), "class"));
+		return array ();
 	}
 }

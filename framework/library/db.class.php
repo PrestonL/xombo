@@ -20,6 +20,7 @@
  * 	See the License for the specific language governing permissions and
  * 	limitations under the License.
  */
+namespace XOMBO;
 class db {
 	const SERVER	=	DB_HOSTNAME;
 	const USER		=	DB_USERNAME;
@@ -71,7 +72,7 @@ class db {
 
 	private static function &conn () {
 		if (is_null (self::$CONNECTION) || !self::$CONNECTION->ping ()) {
-			self::$CONNECTION = new mySQLi (self::SERVER, self::USER, self::PASS, self::SCHEMA);
+			self::$CONNECTION = new \mySQLi (self::SERVER, self::USER, self::PASS, self::SCHEMA);
 			self::query ("SET NAMES 'utf8'");
 		}
 		return self::$CONNECTION;
