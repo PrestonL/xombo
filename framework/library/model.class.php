@@ -66,6 +66,16 @@ abstract class model {
 			$this->hiddenFields = array ();
 		return array_diff_key ($this->getFields (), $this->hiddenFields);
 	}
+	
+	protected function hasField ($name, $properties = true) {
+		$fields = $this->getFields ();
+		if ($properties) {
+			$fields = array_merge ($fields, get_object_vars ($this));
+		}
+		if (array_key_exists ($name, $fields))
+			return true;
+		return false;
+	}
 
 	protected function validate ($name, $value) {
 		$ret = call_user_func (get_class ($this) . "::" . (array_key_exists ($name, $this->validators) && !is_null ($this->validators[$name]) ? $this->validators[$name] : "validatorDefault"), $this, $name, $value);

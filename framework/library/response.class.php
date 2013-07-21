@@ -136,7 +136,7 @@ class response extends factoryModel {
 			return ($val === true ? "true" : "false");
 		} else if (is_model ($val, FALSE)) {
 			$class = array_pop (explode ("\\", get_class ($val)));
-			return "<" . $class . ">" . self::encodeXML ($val->getPublicFields (), $class)  . "</" . $class . ">";
+			return "<" . $class . ($val->hasField ('ID') ? " id=\"" . $val->ID . "\"" : "") . ">" . self::encodeXML ($val->getPublicFields (), $class)  . "</" . $class . ">";
 		} else if (is_iterator ($val, FALSE)) {
 			return $val->valid () ? self::encodeXML ($val->current ()) . self::encodeXML ($val->next ()) : "";
 		} else if (is_array ($val) && count ($val)) {
