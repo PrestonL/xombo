@@ -14,6 +14,11 @@ RewriteRule ^(.*)$ app/assets/$1 [L]
 RewriteCond %{REQUEST_URI} ^/app/assets/(.*)$
 RewriteRule ^(.*)$ $1 [L]
 
+RewriteCond %{DOCUMENT_ROOT}/framework/assets/%{REQUEST_URI} -f
+RewriteRule ^(.*)$ framework/assets/$1 [L]
+RewriteCond %{REQUEST_URI} ^/framework/assets/(.*)$
+RewriteRule ^(.*)$ $1 [L]
+
 RewriteCond %{HTTP_HOST} ^json(.*)$
 RewriteRule .* index.php?json [QSA,L]
 

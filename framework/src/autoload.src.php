@@ -32,11 +32,11 @@ spl_autoload_register (function ($class) {
 	}
 	if (count ($path) && $path[0] == "XOMBO" && file_exists ("./framework/library/" . strtolower ($class) . ".class.php")) {
 		require_once ("./framework/library/" . strtolower ($class) . ".class.php");
-	} else if (file_exists ("./app/classes/" . strtolower ($class) . ".class.php")) {
+	} else if ((!count ($path) || $path[0] != "XOMBO") && file_exists ("./app/classes/" . strtolower ($class) . ".class.php")) {
 		require_once ("./app/classes/" . strtolower ($class) . ".class.php");
-	} else if (file_exists ("./app/controllers/" . strtolower ($class) . ".class.php")) {
+	} else if ((!count ($path) || $path[0] != "XOMBO") && file_exists ("./app/controllers/" . strtolower ($class) . ".class.php")) {
 		require_once ("./app/controllers/" . strtolower ($class) . ".class.php");
-	} else if (file_exists ("./app/models/" . strtolower ($class) . ".class.php")) {
+	} else if ((!count ($path) || $path[0] != "XOMBO") && file_exists ("./app/models/" . strtolower ($class) . ".class.php")) {
 		require_once ("./app/models/" . strtolower ($class) . ".class.php");
 	} else if (XOMBO\DB::exists (strtolower ($class))) {
 		eval ("namespace XOMBO; class " . $class . " extends dbModelDefaults { }");

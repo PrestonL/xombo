@@ -39,6 +39,14 @@ class result implements \iterator {
 	public function current () {
 		return new $this->classname (array_key ($this->data->fetch_assoc (), 'ID'));
 	}
+	public function getArray () {
+		$this->rewind ();
+		$return = array ();
+		foreach ($this as $obj) {
+			$return[] = $obj;
+		}
+		return $return;
+	}
 	public function __destruct () {
 		$this->data->free ();
 	}
@@ -51,5 +59,8 @@ class result implements \iterator {
 	}
 	public function valid () {
 		return $this->position < $this->length ? true : false;
+	}
+	public function count () {
+		return $this->length;
 	}
 }

@@ -58,7 +58,8 @@ abstract class model {
 	}
 
 	protected function getFields () {
-		return is_array ($this->properties) ? $this->properties : array ();
+		$getFields = function($obj) { return get_object_vars($obj); };
+		return is_array ($this->properties) ? array_merge ($this->properties, $getFields ($this)) : $getFields ($this);
 	}
 
 	protected function getPublicFields () {
