@@ -105,7 +105,7 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 		if (is_numeric ($ID)) {
 			$this->load ($ID);
 		}
-		$this->dbModelState = md5 (print_r ($this->getFields (), TRUE));
+		$this->dbModelState = md5 (print_r ($this->getFields (FALSE), TRUE));
 		return;
 	}
 
@@ -140,8 +140,8 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 	public function &save () {
 		if ($this->dontSaveChanges)
 			return $this;
-		if (md5 (print_r ($this->getFields (), TRUE)) != $this->dbModelState) {
-			$properties = $this->getFields ();
+		if (md5 (print_r ($this->getFields (false), TRUE)) != $this->dbModelState) {
+			$properties = $this->getFields (false);
 			$query = "REPLACE INTO `" . self::getChildTable () . "` SET ";
 			if (is_array ($properties)) {
 				$first = TRUE;
@@ -160,7 +160,7 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 			// clear from memcache
 			if (static::isCacheable ())
 				$this->cacheDel ();
-			$this->dbModelState = md5 (print_r ($this->getFields (), TRUE));
+			$this->dbModelState = md5 (print_r ($this->getFields (false), TRUE));
 		}
 		return $this;
 	}

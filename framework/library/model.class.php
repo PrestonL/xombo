@@ -57,9 +57,9 @@ abstract class model {
 		return $this;
 	}
 
-	protected function getFields () {
+	protected function getFields ($properties = true) {
 		$getFields = function($obj) { return get_object_vars($obj); };
-		return is_array ($this->properties) ? array_merge ($this->properties, $getFields ($this)) : $getFields ($this);
+		return is_array ($this->properties) ? array_merge ($this->properties, $properties ? $getFields ($this) : array ()) : ($properties ? $getFields ($this) : array ());
 	}
 
 	protected function getPublicFields () {
@@ -68,9 +68,9 @@ abstract class model {
 		return array_diff_key ($this->getFields (), $this->hiddenFields);
 	}
 	
-	protected function hasField ($name, $properties = true) {
-		$fields = $this->getFields ();
-		if ($properties) {
+	protected function hasField ($name, $properties = true, $publicOnly = false) {
+		$fields = $this->getFields ($properties && $publicOnly ? true : false);
+		if ($properties && !$publicOnly) {
 			$fields = array_merge ($fields, get_object_vars ($this));
 		}
 		if (array_key_exists ($name, $fields))
