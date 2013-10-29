@@ -9,11 +9,11 @@
 					<link href="/favicon.ico" rel="shortcut icon" />
 				</head>
 				<body>
-					<div data-role="page">
-						<div data-role="header" data-theme="a" id="classHeader" data-position="fixed">
-							<a href="../" data-icon="arrow-u" data-iconpos="notext" data-direction="reverse" class="ui-btn-right jqm-home ui-btn ui-btn-up-b ui-btn-icon-notext ui-btn-corner-all ui-shadow" title="Back" data-theme="a"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Back</span><span class="ui-icon ui-icon-home ui-icon-shadow"></span></span></a>
+					<div>
+						<div>
+							<a href="../">Up</a>
 						</div>
-						<div data-role="content">
+						<div>
 							<xsl:choose>
 								<xsl:when test="count(responses)>0">
 									<xsl:apply-templates select="responses" />
@@ -36,7 +36,7 @@
 					<xsl:apply-templates select="result" />
 				</xsl:when>
 				<xsl:when test="error">
-					<ul data-role="listview" data-inset="true">
+					<ul>
 						<xsl:apply-templates select="error" />
 					</ul>
 				</xsl:when>
@@ -58,7 +58,7 @@
 						<form>
 							<xsl:attribute name="method">post</xsl:attribute>
 							<xsl:attribute name="action">.</xsl:attribute>
-							<ul data-role="listview" data-inset="true">
+							<ul>
 								<xsl:for-each select="*">
 									<li>
 										<label>
@@ -85,24 +85,19 @@
 							<fieldset class="ui-grid-a">
 								<div class="ui-block-a">
 									<a>
-										<xsl:attribute name="href">../delete/<xsl:value-of select="normalize-space(ID)" />/</xsl:attribute>
-										<xsl:attribute name="data-rel">dialog</xsl:attribute>
-										<xsl:attribute name="data-transition">pop</xsl:attribute>
-										<xsl:attribute name="data-role">button</xsl:attribute>
-										<xsl:attribute name="data-icon">delete</xsl:attribute>
-										<xsl:attribute name="data-theme">a</xsl:attribute>
+										<xsl:attribute name="href">../../delete/<xsl:value-of select="normalize-space(ID)" />/</xsl:attribute>
 										Delete
 									</a>
 								</div>
 								<div class="ui-block-b">
-									<button type="submit" data-theme="b" data-role="button" data-icon="check">Save</button>
+									<input type="submit" value="Save" />
 								</div>
 							</fieldset>
 						</form>
 					</xsl:for-each>
 				</xsl:when>
 				<xsl:when test="*[1]/ID">
-					<ul data-role="listview" data-inset="true">
+					<ul>
 						<xsl:for-each select="*">
 							<li>
 								<a>
@@ -114,13 +109,13 @@
 					</ul>
 				</xsl:when>
 				<xsl:when test=".=1">
-					<a href="../../describe/" data-role="button" data-icon="delete">OK</a>
+					<a href="../../describe/">OK</a>
 				</xsl:when>
 				<xsl:when test=".=0">
-					<a href="../../describe/" data-role="button" data-icon="delete">Failed</a>
+					<a href="../../describe/">Failed</a>
 				</xsl:when>
 				<xsl:when test="count(*)">
-					<ul data-role="listview" data-inset="true">
+					<ul>
 						<xsl:for-each select="*">
 							<li>
 								<a>

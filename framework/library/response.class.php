@@ -57,7 +57,7 @@ class response extends factoryModel {
 			$class = $request->getClass ();
 			if (is_model ($path . $class) && !is_controller ($path . $class)) {
 				$class .= "Controller";
-				if (!class_exists ($class)) eval ("namespace XOMBO; class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getNamespace () . "\\" . $request->getClass () . "\"; } }");
+				if (!class_exists ($class) && !class_exists ('XOMBO\\' . $class)) eval ("namespace XOMBO; class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getNamespace () . "\\" . $request->getClass () . "\"; } }");
 			}
 			switch (TRUE) {
 				case !class_exists ($path . $class):
@@ -135,8 +135,9 @@ class response extends factoryModel {
 		if ($val === TRUE || $val === FALSE) {
 			return ($val === true ? "true" : "false");
 		} else if (is_model ($val, FALSE)) {
-			$class = array_pop (explode ("\\", get_class ($val)));
-			return "<" . $class . ($val->hasField ('ID') ? " id=\"" . $val->ID . "\"" : "") . ">" . self::encodeXML ($val->getPublicFields (), $class)  . "</" . $class . ">";
+			$path = explode ("\\", get_class ($val));
+			$class = array_pop ($path);
+			return "<" . $class . ">" . self::encodeXML ($val->getPublicFields (false), $class)  . "</" . $class . ">";
 		} else if (is_iterator ($val, FALSE)) {
 			return $val->valid () ? self::encodeXML ($val->current ()) . self::encodeXML ($val->next ()) : "";
 		} else if (is_array ($val) && count ($val)) {
@@ -200,7 +201,7 @@ class response extends factoryModel {
 				$this->delField ("result");
 				header ("HTTP/1.1 " . $this->error["code"] . " " . (array_key_exists ($this->error["code"], $codes) ? $codes[$this->error["code"]] : "OK"));
 			}
-			return array_key_exists ("json", $_REQUEST) ? self::encodeJSON ($this) : self::encodeXML ($this) . "\n<!--<![CDATA[     See something? Say something! Help us improve support for your browser, here: http://rok.yt/10Z8N9     ]]>//-->";
+			return array_key_exists ("json", $_REQUEST) ? self::encodeJSON ($this, false) : self::encodeXML ($this) . "\n<!--<![CDATA[     See something? Say something! Help us improve support for your browser, here: http://rok.yt/10Z8N9     ]]>//-->";
 		} catch (\exception $e) {
 			ob_end_clean ();
 			var_dump (debug_backtrace ());

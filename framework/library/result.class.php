@@ -26,18 +26,29 @@ class result implements \iterator {
 	private $data;
 	private $position;
 	private $length;
+	private $callbacks;
+	
 	public function __construct ($class, $data) {
 		$this->classname = $class;
 		$this->data = $data;
 		$this->position = 0;
 		$this->length = $data->num_rows;
+		$this->callbacks = array ();
+	}
+	public function bind ($call) {
+		$this->callbacks[] = $call;
+		return $this;
 	}
 	public function rewind () {
 		$this->position = 0;
 		$this->data->data_seek (0);
 	}
 	public function current () {
-		return new $this->classname (array_key ($this->data->fetch_assoc (), 'ID'));
+		$obj = new $this->classname (array_key ($this->data->fetch_assoc (), 'ID'));
+		foreach ($this->callbacks as $call) {
+			$obj = $call ($obj);
+		}
+		return $obj;
 	}
 	public function getArray () {
 		$this->rewind ();

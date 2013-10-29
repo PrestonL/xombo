@@ -25,13 +25,15 @@ abstract class factoryModel extends model implements factoryModelInterface {
 	static $WAREHOUSE;
 
 	protected static function getCount () {
-		$class = array_pop (explode ("\\", get_called_class ()));
+		$path =	explode ("\\", get_called_class ());
+		$class = array_pop ($path);
 		if (!is_array (self::$WAREHOUSE)) return 0;
 		return array_key_exists ($class, self::$WAREHOUSE) ? count (self::$WAREHOUSE[$class]) : 0;
 	}
 
 	protected static function &getAll () {
-		$class = array_pop (explode ("\\", get_called_class ()));
+		$path = explode ("\\", get_called_class ());
+		$class = array_pop ($path);
 		if (!is_array (self::$WAREHOUSE)) self::$WAREHOUSE = array ();
 		if (array_key_exists ($class, self::$WAREHOUSE))
 			return self::$WAREHOUSE[$class];
@@ -40,7 +42,8 @@ abstract class factoryModel extends model implements factoryModelInterface {
 	}
 
 	protected static function &store (&$obj) {
-		$class = array_pop (explode ("\\", get_class ($obj)));
+		$path = explode ("\\", get_class ($obj));
+		$class = array_pop ($path);
 		$id = array_key_exists ("ID", $obj->getFields ()) ? array_key ($obj->getFields (), "ID") : array_key_exists ("id", $obj->getFields ()) ? array_key ($obj->getFields (), "id") : NULL;
 		if (!is_array (self::$WAREHOUSE)) self::$WAREHOUSE = array ();
 		if (!array_key_exists ($class, self::$WAREHOUSE)) self::$WAREHOUSE[$class] = array ();
@@ -53,7 +56,8 @@ abstract class factoryModel extends model implements factoryModelInterface {
 	}
 
 	protected static function shift () {
-		$class = array_pop (explode ("\\", get_called_class ()));
+		$path = explode ("\\", get_called_class ());
+		$class = array_pop ($path);
 		if (array_key_exists ($class, self::$WAREHOUSE) && count (self::$WAREHOUSE[$class]))
 			return array_shift (self::$WAREHOUSE[$class]);
 		return NULL;

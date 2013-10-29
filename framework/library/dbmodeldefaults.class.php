@@ -24,7 +24,8 @@ namespace XOMBO;
 abstract class dbModelDefaults extends dbModel {
 
 	public static function getTable () {
-		return strtolower (array_pop (explode ("\\", get_called_class ())));
+		$path = explode ("\\", get_called_class ());
+		return strtolower (array_pop ($path));
 	}
 
 	public static function isCacheable () {
@@ -44,6 +45,7 @@ abstract class dbModelDefaults extends dbModel {
 				return self::$WAREHOUSE[$class][$ID];
 		}
 		$reflector = new \ReflectionClass ($class);
-		return self::store ($reflector->newInstanceArgs (func_get_args ()));
+		$var = $reflector->newInstanceArgs (func_get_args ());
+		return self::store ($var);
 	}
 }
