@@ -30,17 +30,18 @@ function main () {
 	// output of result sets
 	$callback = array_key_exists ("json", $_REQUEST) && array_key_exists ("callback", $_REQUEST) ? $_REQUEST["callback"] : NULL;
 	echo !array_key_exists ("json", $_REQUEST) ? "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" : (is_string ($callback) ? $callback . " (" : "");
-	if (array_key_exists ("html", $_REQUEST) && !array_key_exists ("json", $_REQUEST))
-		$xsl = call_user_func (
-					(
-						is_model ((array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass ()) ? 
-							(array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass () . "Controller"
-							 : 
-							(array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass ()
-					)
-					 . "::xsl"
-				, TRUE);
-
+	if (array_key_exists ("html", $_REQUEST) && !array_key_exists ("json", $_REQUEST)) {
+		$controller = (
+			is_model ((array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass ()) ? 
+				(array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass () . "Controller"
+			 : 
+				(array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () == "" ? "" : array_key (XOMBO\response::getAll (), 0)->getRequest ()->getNamespace () . "\\") . array_key (XOMBO\response::getAll (), 0)->getRequest ()->getClass ()
+		);
+		if (!is_controller ($controller)) {
+			$controller = "XOMBO\\defaultController";
+		}
+		$xsl = call_user_func ($controller . "::xsl", TRUE);
+	}
 	if (count (XOMBO\response::getAll ()) == 1) {
 		$response = array_pop (XOMBO\response::getAll ());
 		if (!array_key_exists ("json", $_REQUEST)) echo "<?xml-stylesheet type=\"text/xsl\" href=\"/" . $response->getRequest ()->getClass () . "/xsl\" ?>\n";
