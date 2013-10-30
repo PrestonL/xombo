@@ -37,7 +37,6 @@ abstract class controller extends model {
 	}
 
 	public static function xsl ($return = false) {
-		$class = method_exists (get_called_class (), "getModel") ? static::getModel () : get_called_class ();
 		if (!$return) header ("Content-Type: text/xml");
 
 		$file = "./app/assets/xsl/" . strtolower (get_called_class ()) . ".xsl";
