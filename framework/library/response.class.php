@@ -57,7 +57,7 @@ class response extends factoryModel {
 			$class = $request->getClass ();
 			if (is_model ($path . $class) && !is_controller ($path . $class)) {
 				$class .= "Controller";
-				if (!class_exists ($class) && !class_exists ('XOMBO\\' . $class)) eval ("namespace XOMBO; class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getNamespace () . "\\" . $request->getClass () . "\"; } }");
+				if (!class_exists ($class) && !class_exists ('XOMBO\\' . $class)) eval ("namespace XOMBO; class " . $class . " extends dbModelController { static function getModel () { return \"" . $request->getNamespace () . "\\\\" . $request->getClass () . "\"; } }");
 			}
 			switch (TRUE) {
 				case !class_exists ($path . $class):
