@@ -149,7 +149,7 @@ class response extends factoryModel {
 			}
 			$return = "";
 			foreach ($val as $key => $v) {
-				$return .= ($noKey ? "" : "<" . (is_numeric ($key) ? "string id=\"$key\"" : $key) . ">") . self::encodeXML ($v) . ($noKey ? "" : "</" . (is_numeric ($key) ? "string" : $key) . ">");
+				$return .= ($noKey ? "" : "<" . (is_numeric ($key) ? "array id=\"$key\"" : $key) . ">") . self::encodeXML ($v) . ($noKey ? "" : "</" . (is_numeric ($key) ? "array" : $key) . ">");
 			}
 			return $return;
 		} else if (!is_array ($val)) {
