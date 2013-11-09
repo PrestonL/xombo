@@ -84,7 +84,7 @@ abstract class model {
 	}
 
 	protected static function validatorDefault ($obj, $field, $value) { // validator prototype
-		if (is_model ($obj) && (is_string ($value) || is_numeric ($value) || is_bool ($value)))
+		if (is_model ($obj) && (is_string ($value) || is_numeric ($value) || is_bool ($value) || is_model ($value)))
 			return $value;
 		return NULL;
 	}
