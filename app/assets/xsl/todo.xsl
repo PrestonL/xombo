@@ -22,6 +22,9 @@
 							</xsl:choose>
 						</div>
 					</div>
+					<script type="text/javascript" src="/js/jquery.min.js" />
+					<script type="text/javascript" src="/js/jquery.xslt.js" />
+					<script type="text/javascript" src="/js/site.js" />
 				</body>
 			</html>
 		</xsl:template>
@@ -88,6 +91,8 @@
 							<xsl:attribute name="href">/todo/complete/<xsl:value-of select="ID" />/1</xsl:attribute>
 						</xsl:otherwise>
 					</xsl:choose>
+					<xsl:attribute name="data-target">#li_todo<xsl:value-of select="ID" /></xsl:attribute>
+					<xsl:attribute name="data-template">/todo/xsl</xsl:attribute>
 				</a>
 			</li>
 		</xsl:template>
