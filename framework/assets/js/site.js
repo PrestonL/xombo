@@ -82,7 +82,6 @@ var ajaxLoad = function (xml, xsl, target, targetFunc, pushHistory, data) {
 			if (obj == false) return;
 			obj.find ("noscript").remove ();
 			document.title = obj.find ("title").text ();
-			userBackground (obj.find ("body"));
 			obj.find ('link[rel="stylesheet"]').each (function (i, el) {
 				if (!$('link[rel="stylesheet"][href="' + $(el).attr ("href") + '"]').length) {
 					if (typeof document.createStyleSheet != "undefined") {
@@ -99,12 +98,8 @@ var ajaxLoad = function (xml, xsl, target, targetFunc, pushHistory, data) {
 				}
 			});
 			ajaxifyLinks ();
-			screenshots ();
 			$("body").css ("cursor", "default");
 			$("a, a *").css ("cursor", "pointer");
-			if (!navigator.userAgent.match(/(iPad|iPhone|iPod|BlackBerry|PlayBook|webOS|Android)/i)) {
-				$(options.target).find ('[title]').tipTip ({ maxWidth: "150px", fadeIn: 0, fadeOut: 0 });
-			}
 			return;
 		},
 		xmlCache : false,
