@@ -130,7 +130,7 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 			if (is_array ($row)) foreach ($row as $field => $value) {
 				$this->{$field} = $value;
 			}
-			if (static::isCacheable () && $this->ID > 0) {
+			if (static::isCacheable ()) {
 				$this->cacheSet ();
 			}
 		}
@@ -153,6 +153,7 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 					}
 				}
 			}
+			error_log ("SQL: " . $query);
 			DB::query ($query);
 			if ($this->ID <= 0) {
 				$this->ID = DB::lastID ();
@@ -170,14 +171,14 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 	}
 
 	protected static function cacheGet ($ID) {
-		return DB::cacheGet (get_called_class () . "(" . $ID . ")");
+		return DB::cacheGet (SITE_DOMAIN . ":" . get_called_class () . "(" . $ID . ")");
 	}
 
 	protected function cacheSet () {
-		DB::cacheSet (get_called_class () . "(" . $this->ID . ")", $this);
+		DB::cacheSet (SITE_DOMAIN . ":" . get_called_class () . "(" . $this->ID . ")", $this);
 	}
 
 	protected function cacheDel () {
-		DB::cacheDel (get_called_class () . "(" . $this->ID . ")", $this);
+		DB::cacheDel (SITE_DOMAIN . ":" . get_called_class () . "(" . $this->ID . ")", $this);
 	}
 }

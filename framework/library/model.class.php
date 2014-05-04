@@ -58,14 +58,14 @@ abstract class model {
 	}
 
 	protected function getFields ($properties = true) {
-		$getFields = function($obj) { return get_object_vars ($obj); };
+		$getFields = function($obj) { return get_object_vars($obj); };
 		return is_array ($this->properties) ? array_merge ($this->properties, $properties ? $getFields ($this) : array ()) : ($properties ? $getFields ($this) : array ());
 	}
 
 	protected function getPublicFields () {
 		if (!is_array ($this->hiddenFields))
 			$this->hiddenFields = array ();
-		return array_diff_key ($this->getFields (false), $this->hiddenFields);
+		return array_diff_key ($this->getFields (), $this->hiddenFields);
 	}
 	
 	protected function hasField ($name, $properties = true, $publicOnly = false) {
@@ -84,7 +84,7 @@ abstract class model {
 	}
 
 	protected static function validatorDefault ($obj, $field, $value) { // validator prototype
-		if (is_model ($obj) && (is_string ($value) || is_numeric ($value) || is_bool ($value) || is_model ($value)))
+		if (is_model ($obj) && (is_string ($value) || is_numeric ($value) || is_bool ($value) || is_array ($value)))
 			return $value;
 		return NULL;
 	}
