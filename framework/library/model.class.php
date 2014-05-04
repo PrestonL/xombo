@@ -49,7 +49,7 @@ abstract class model {
 	}
 
 	protected function &hideField ($name) {
-		if (is_array ($this->properties) && array_key_exists ($name, $this->properties)) {
+		if (array_key_exists ($name, $this->getPublicFields ())) {
 			$this->hiddenFields[$name] = true;
 			return $this;
 		}
@@ -105,5 +105,10 @@ abstract class model {
 		}
 		throw new \exception ("You tried to set a value to " . $name . " when " . $name . " does not exist as a field in this context.");
 		return FALSE;
+	}
+	public function __construct () {
+		$this->hideField ("validators");
+		$this->hideField ("properties");
+		$this->hideField ("hiddenFields");
 	}
 }

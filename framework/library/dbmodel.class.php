@@ -91,6 +91,7 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 	}
 
 	public function __construct ($ID = NULL) {
+		parent::__construct ();
 		foreach (DB::describe (self::getChildTable ()) as $field => $type) {
 			$this->addField (
 				$field,

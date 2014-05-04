@@ -55,6 +55,7 @@ class request extends factoryModel {
 	public function getParams () { return $this->params; }
 
 	public function __construct ($path = NULL) {
+		parent::__construct ();
 		$this->addField ("ID", self::getCount ());
 		$args = is_string ($path) ? explode ('/', trim ($path, '/')) : array ();
 		$this->addField ("namespace", "");
