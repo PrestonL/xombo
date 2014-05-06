@@ -5,14 +5,11 @@
 				<head>
 					<meta charset="utf-8" />
 					<meta name="viewport" content="width=device-width, initial-scale=1" />
-					<title>XML-RPC response</title>
+					<title>XOMBO Cloud</title>
 					<link href="/favicon.ico" rel="shortcut icon" />
 				</head>
 				<body>
 					<div>
-						<div>
-							<a href="../">Up</a>
-						</div>
 						<div>
 							<xsl:choose>
 								<xsl:when test="count(responses)>0">
@@ -31,25 +28,15 @@
 			<xsl:apply-templates select="response" />
 		</xsl:template>
 		<xsl:template match="response">
-			<xsl:choose>
-				<xsl:when test="result">
-					<xsl:apply-templates select="result" />
-				</xsl:when>
-				<xsl:when test="error">
-					<ul>
-						<xsl:apply-templates select="error" />
-					</ul>
-				</xsl:when>
-			</xsl:choose>
-			<h6>
-				response #<xsl:value-of select="id" /> via <a href="/">XOMBO XML-RPC <xsl:value-of select="xmlrpc" /></a>
-			</h6>
+			<xsl:apply-templates select="*" />
 		</xsl:template>
 		<xsl:template match="error">
-			<li>
-				<p><i>Error <xsl:value-of select="id" /></i></p>
-				<p><strong><xsl:value-of select="code" /></strong> <xsl:value-of select="message" /></p>
-			</li>
+			<ul>			
+				<li>
+					<p><i>Error <xsl:value-of select="id" /></i></p>
+					<p><strong><xsl:value-of select="code" /></strong> <xsl:value-of select="message" /></p>
+				</li>
+			</ul>
 		</xsl:template>
 		<xsl:template match="result">
 			<xsl:choose>
@@ -102,7 +89,7 @@
 							<li>
 								<a>
 									<xsl:attribute name="href">../view/<xsl:value-of select="normalize-space(ID)" />/</xsl:attribute>
-									<xsl:value-of select="normalize-space(ID)" />
+									<xsl:value-of select="normalize-space(name)" />
 								</a>
 							</li>
 						</xsl:for-each>
