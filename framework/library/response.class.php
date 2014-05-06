@@ -104,6 +104,7 @@ class response extends factoryModel {
 	}
 
 	public function __construct (&$request) {
+		parent::__construct ();
 		$ID = $request->ID;
 		$this->request = $request;
 		$this->addField (array_key_exists ("json", $_REQUEST) ? "jsonrpc" : "xmlrpc", self::VERSION);

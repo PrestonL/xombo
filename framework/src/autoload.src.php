@@ -38,10 +38,10 @@ spl_autoload_register (function ($class) {
 		require_once ("./app/controllers/" . strtolower ($class) . ".class.php");
 	} else if ((!count ($path) || $path[0] != "XOMBO") && file_exists ("./app/models/" . strtolower ($class) . ".class.php")) {
 		require_once ("./app/models/" . strtolower ($class) . ".class.php");
-	} else if (XOMBO\DB::exists (strtolower ($class)) && !class_exists ('XOMBO\\' . $class, FALSE)) {
+	} else if (XOMBO\DB::exists (strtolower ($class))) {
 		eval ("namespace XOMBO; class " . $class . " extends dbModelDefaults { }");
 	} else if (strpos (strtolower ($class), "virtual") === 0) {
-		eval ("namespace XOMBO; class " . $class . " extends factoryModel {" . '
+		eval ("class " . $class . " extends XOMBO\\factoryModel {" . '
 			public static function init () { return; }
 			public static function &factory () {
 				$return = self::store (new ' . $class . ' ());

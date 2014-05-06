@@ -26,7 +26,7 @@ abstract class dbModelController extends controller implements dbModelController
 	private static function getModelByID ($ID) {
 		$obj = call_user_func (static::getModel () . "::getID", $ID);
 		if (!is_model ($obj))
-			throw new \exception ("The selected ID, " . $ID . ", could not be found.");
+			throw new \exception ("The selected ID could not be found.");
 		return $obj;
 	}
 
@@ -77,7 +77,7 @@ abstract class dbModelController extends controller implements dbModelController
 	}
 
 	public static function describe () {
-		$model = call_user_func (static::getModel () . "::factory");
+		eval ("\$model = " . static::getModel () . "::factory ();");
 		$inFields = DB::describe (call_user_func (static::getModel () . "::getTable"));
 		$fields = array ();
 		foreach ($inFields as $field => $type) $fields["__" . $field] = $type;

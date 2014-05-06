@@ -29,10 +29,11 @@ class db {
 
 	const BOOLEAN	=	"bool";
 	const INTEGER	=	"integer";
+	const FLOAT		=	"float";
 	const STRING	=	"string";
 
 	static $CACHE_LENGTH = 60;
-	static $CACHE_LENGTH_LONG = 600;
+	static $CACHE_LENGTH_LONG = 300;
 	static $CACHE_CHANGED = false;
 
 	static $INSTANCE; // kicks off the destructor to save the cache
@@ -81,7 +82,7 @@ class db {
 	private static function &mem () {
 		if (MEMCACHE_ENABLED) {
 			if (is_null (self::$MEMCACHE)) {
-				self::$MEMCACHE = new memcache ();
+				self::$MEMCACHE = new \memcache ();
 				self::$MEMCACHE->addServer (MEMCACHE_HOSTNAME, 11211);
 			}
 			return self::$MEMCACHE;
@@ -110,10 +111,10 @@ class db {
 
 	static function &query ($query, $cache = false) {
 		// $cache -- determines if it should attempt query via memcache; not the internal, non-persistant query cache
-		$sum = md5 ($query);
 		$db_result = self::conn ()->query ($query);
 		if ($cache && MEMCACHE_ENABLED) {
 			// vacuum the result set into memcache if this query is cacheable
+			$sum = md5 ($query);
 			$result = new memcacheResult ($db_result);
 			self::cacheSet ($sum, $result);
 			return $result;
@@ -145,6 +146,9 @@ class db {
 					case (strpos (" " . $row['Type'], "bigint")):
 					case (strpos (" " . $row['Type'], "tinyint")):
 						$type = self::INTEGER;
+						break;
+					case (strpos (" " . $row['Type'], "float")):
+						$type = self::FLOAT;
 						break;
 					default:
 						$type = self::STRING;

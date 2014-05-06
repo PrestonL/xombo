@@ -37,6 +37,7 @@ abstract class controller extends model {
 	}
 
 	public static function xsl ($return = false) {
+		$class = method_exists (get_called_class (), "getModel") ? static::getModel () : get_called_class ();
 		if (!$return) header ("Content-Type: text/xml");
 
 		$file = "./app/assets/xsl/" . strtolower (get_called_class ()) . ".xsl";
@@ -80,7 +81,7 @@ abstract class controller extends model {
 				$var = array ();
 				$expr = '/(\<xsl:variable name=\"' . $matches[2] . '\")([\s]+)(select=\")(document\(\\\')([a-zA-Z0-9\.\-\_\/]+)(\\\'\))([a-zA-Z0-9\.\-\_\/]+)(\")([\s]*)(\/\>)/';
 				if (preg_match ($expr, self::$xsl, $var)) {
-					$varXML[$matches[2]] = new DOMDocument ();
+					$varXML[$matches[2]] = new \DOMDocument ();
 					if (preg_match ("/\.xml$/", $var[5])) {
 						if (!$varXML[$matches[2]]->load ($_SERVER["DOCUMENT_ROOT"] . $var[5])) {
 							unset ($varXML[$matches[2]]);
@@ -90,7 +91,7 @@ abstract class controller extends model {
 						$varXML[$matches[2]]->loadXML ((string) $xml);
 					}
 					if (array_key_exists ($matches[2], $varXML))
-						$varXPath[$matches[2]] = new DOMXPath ($varXML[$matches[2]]);
+						$varXPath[$matches[2]] = new \DOMXPath ($varXML[$matches[2]]);
 					$varPath[$matches[2]] = $var[7];
 				}
 			}
