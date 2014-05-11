@@ -22,11 +22,11 @@
  */
 namespace XOMBO;
 class result implements \iterator {
-	private $classname;
-	private $data;
-	private $position;
-	private $length;
-	private $callbacks;
+	protected $classname;
+	protected $data;
+	protected $position;
+	protected $length;
+	protected $callbacks;
 	
 	public function __construct ($class, $data) {
 		$this->classname = $class;

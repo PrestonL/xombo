@@ -67,7 +67,6 @@ abstract class dbModel extends factoryModel implements dbModelInterface {
 		if ($limit > 0) {
 			$query .= " LIMIT " . ($from > 0 ? $from . "," : "") . $limit;
 		}
-		$results = array ();
 		$result = DB::query ($query, $cache);
 		return new result (get_called_class (), $result);
 	}
