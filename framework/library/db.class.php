@@ -112,13 +112,13 @@ class db {
 	static function &query ($query, $cache = false) {
 		// $cache -- determines if it should attempt query via memcache; not the internal, non-persistant query cache
 		$db_result = self::conn ()->query ($query);
-		if ($cache && MEMCACHE_ENABLED) {
+		/*if ($cache && MEMCACHE_ENABLED) {
 			// vacuum the result set into memcache if this query is cacheable
 			$sum = md5 ($query);
 			$result = new memcacheResult ($db_result);
 			self::cacheSet ($sum, $result);
 			return $result;
-		}
+		}*/
 		return $db_result;
 	}
 
