@@ -75,6 +75,7 @@ class sessionHandler extends dbModelDefaults implements \SessionHandlerInterface
 	}
 	public function gc ($maxlifetime) {
 		// garbage collection
+		db::query ("DELETE FROM `" . self::getTable () . "` WHERE `updated` <= TIMESTAMP(DATE_SUB(NOW(), INTERVAL " . $maxlifetime . " SECOND));");
 		return true;
 	}
 }
