@@ -1,6 +1,6 @@
 <?php
 namespace XOMBO;
-class sessionHandler extends dbModelDefaults implements \SessionHandlerInterface {
+class sessionHandler extends dbModelDefaults {
 	static $savePath;
 	static $name;
 	private $dbResult;
