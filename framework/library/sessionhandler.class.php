@@ -16,8 +16,7 @@ class sessionHandler extends dbModelDefaults implements \SessionHandlerInterface
 			array (self::$handler, 'read'),
 			array (self::$handler, 'write'),
 			array (self::$handler, 'destroy'),
-			array (self::$handler, 'gc'),
-			true
+			array (self::$handler, 'gc')
 		);
 	}
 	public static function start () {
