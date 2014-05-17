@@ -10,7 +10,15 @@ class sessionHandler extends dbModelDefaults implements \SessionHandlerInterface
 		session_set_cookie_params (SESSION_LIFETIME, SESSION_PATH, SESSION_DOMAIN, FALSE, FALSE);
 		self::$handler = new self ();
 		self::$handler->dontSave ();
-		session_set_save_handler (self::$handler, true);
+		session_set_save_handler (
+			array (self::$handler, 'open'),
+			array (self::$handler, 'close'),
+			array (self::$handler, 'read'),
+			array (self::$handler, 'write'),
+			array (self::$handler, 'destroy'),
+			array (self::$handler, 'gc'),
+			true
+		);
 	}
 	public static function start () {
 		session_start ();

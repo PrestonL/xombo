@@ -1,4 +1,4 @@
-sessionhandler	CREATE TABLE `sessionhandler` (
+CREATE TABLE `sessionhandler` (
 	`ID` bigint(64) unsigned NOT NULL AUTO_INCREMENT,
 	`savePath` varchar(100) NOT NULL,
 	`name` varchar(100) NOT NULL,
