@@ -41,9 +41,10 @@ class sessionHandler extends dbModelDefaults {
 	}
 	private function getData ($ID) {
 		if (is_null ($this->dbResult)) {
-			$sessions = self::select (array ('savePath' => self::$savePath, 'name' => self::$name, 'sessionId' => $ID));
+			$sessions = self::select (array ('savePath' => self::$savePath, 'name' => self::$name, 'sessionId' => $ID), 1);
 			if ($sessions->valid ()) {
-				$this->dbResult = $sessions->current ();
+				$this->dbResult = $sessions->getArray ();
+				$this->dbResult = $this->dbResult[0];
 			} else {
 				$this->dbResult = new self ();
 				$this->dbResult->savePath = self::$savePath;
