@@ -50,11 +50,15 @@ class result implements \iterator {
 		}
 		return $obj;
 	}
-	public function getArray () {
+	public function getArray ($indexAsID = false) {
 		$this->rewind ();
 		$return = array ();
 		foreach ($this as $obj) {
-			$return[] = $obj;
+			if ($indexAsID) {
+				$return[$obj->ID] = $obj;
+			} else {
+				$return[] = $obj;
+			}
 		}
 		return $return;
 	}
