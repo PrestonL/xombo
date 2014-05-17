@@ -92,20 +92,20 @@ class db {
 
 	static function cacheSet ($key, $obj) {
 		if (MEMCACHE_ENABLED) {
-			if (!self::mem ()->replace ($key, $obj, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG)) {
-				self::mem ()->set ($key, $obj, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG);
+			if (!self::mem ()->replace (SITE_DOMAIN . $key, $obj, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG)) {
+				self::mem ()->set (SITE_DOMAIN . $key, $obj, MEMCACHE_COMPRESSED, self::$CACHE_LENGTH_LONG);
 			}
 		}
 		return $obj;
 	}
 
 	static function cacheGet ($key) {
-		if (MEMCACHE_ENABLED) return self::mem ()->get ($key);
+		if (MEMCACHE_ENABLED) return self::mem ()->get (SITE_DOMAIN . $key);
 		return false;
 	}
 
 	static function cacheDel ($key) {
-		if (MEMCACHE_ENABLED) return self::mem ()->delete ($key);
+		if (MEMCACHE_ENABLED) return self::mem ()->delete (SITE_DOMAIN . $key);
 		return true;
 	}
 
