@@ -49,7 +49,7 @@ abstract class model {
 	}
 
 	protected function &hideField ($name) {
-		if (array_key_exists ($name, $this->getPublicFields ())) {
+		if ($this->hasField ($name)) {
 			$this->hiddenFields[$name] = true;
 			return $this;
 		}
