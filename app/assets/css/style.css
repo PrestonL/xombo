@@ -1,0 +1,517 @@
+body {
+	font-size: 10px;
+	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: normal;
+	text-align: center;
+	text-decoration: none;
+	cursor: default;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	border: none;
+	text-decoration: inherit;
+	cursor: inherit;
+	font-size: inherit;
+	font-weight: inherit;
+	line-height: 1em;
+    -webkit-touch-callout: inherit;
+    -webkit-user-select: inherit;
+    -khtml-user-select: inherit;
+    -moz-user-select: inherit;
+    -ms-user-select: inherit;
+    user-select: inherit;
+}
+a {
+	color: inherit;
+}
+a, button, input[type="submit"], input[type="button"], label[for] {
+	cursor: pointer;
+}
+body > input[type="checkbox"], body > input[type="radio"] {
+	display: none;
+	width: 0;
+	height: 0;
+	visibility: hidden;
+}
+strong, h3, h4 {
+	font-weight: bold;
+}
+body > header, main > article, body > footer, body > nav {
+	text-align: left;
+	margin-left: auto;
+	margin-right: auto;
+	width: 100%;
+	max-width: 960px;
+	padding: 20px;
+}
+header > h2 {
+	float: left;
+	width: 10%;
+	min-width: 64px;
+	min-height: 64px;
+	margin-right: 20px;
+}
+header > h2 img {
+	width: 100%;
+	height: auto;
+	background: #F0F0F0;
+	border-radius: 10%;
+	border: 3px solid #CCCCCC;
+	-moz-box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+}
+header > h2 img + del {
+	display: none;
+}
+header hgroup {
+	float: left;
+}
+header hgroup h1 {
+	font-size: 240%;
+	margin-bottom: .5em;
+}
+header hgroup h2 {
+	font-size: 150%;
+	margin-bottom: .5em;
+}
+header ul, footer ul {
+	list-style-type: none;
+	font-size: 160%;
+	display: block;
+	clear: right;
+	float: right;
+}
+header ul li, footer ul li {
+	float: left;
+}
+header ul li:first-of-type, footer ul li:first-of-type {
+	display: none;
+}
+@media (max-width: 460px) {
+	header ul li:first-of-type, footer ul li:first-of-type {
+		display: block;
+	}
+	header ul li:not(:first-of-type), footer ul li:not(:first-of-type) {
+		display: none;
+	}
+	input[id="checkbox_menu"]:checked ~ header ul, input[id="checkbox_menu"]:checked ~ footer ul {
+		clear: both;
+		width: 100%;
+	}
+	input[id="checkbox_menu"]:checked ~ header ul li, input[id="checkbox_menu"]:checked ~ footer ul li {
+		display: block;
+		width: 100%;
+		text-align: center;
+	}
+	input[id="checkbox_menu"]:checked ~ header ul li:not(:last-child), input[id="checkbox_menu"]:checked ~ footer ul li:not(:last-child) {
+		margin-bottom: .5em;
+	}
+}
+@media (min-width: 461px) {
+	header ul li:not(:last-child), footer ul li:not(:last-child) {
+		padding-right: 20px;
+	}
+}
+header hr, article hr, footer hr, nav hr, details hr {
+	display: block;
+	clear: both;
+	width: 100%;
+	height: 0;
+	border: none;
+}
+article h3 {
+	display: block;
+	font-size: 200%;
+}
+article section:not(:last-of-type) {
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+article section h4 {
+	display: block;
+	font-size: 150%;
+	margin-bottom: 1.333em;
+}
+article section p {
+	font-size: 150%;
+	line-height: 150%;
+}
+article section p a {
+	border-bottom: 1px dashed #CECECE;
+}
+input[type="text"], input[type="email"], textarea, article h3, article details summary *:not(label), article details dl dd, article section h4, article section p, article section aside h5, article section aside h6, article section figure > figcaption, article section dl dd {
+    -webkit-touch-callout: text;
+    -webkit-user-select: text;
+    -khtml-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    cursor: text;
+}
+article aside img, article figure img {
+    -webkit-touch-callout: all;
+    -webkit-user-select: all;
+    -khtml-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+}
+article section p:not(:last-of-type) {
+	margin-bottom: 2em;
+}
+article section aside, article section nav, article section figure {
+	float: right;
+	clear: right;
+	width: 40%;
+	min-width: 120px;
+	max-width: 320px;
+	margin: 2em;
+	padding: 1em;
+	color: #999;
+}
+article section aside img, article section figure img {
+	width: 100%;
+	border: 3px solid #CCCCCC;
+	background: #F0F0F0;
+	margin-bottom: 2em;
+}
+article section aside h5, article section nav h5, article section figure figcaption {
+	font-size: 120%;
+	font-style: italic;
+}
+article section aside h5:first-child {
+	font-size: 150%;
+	font-weight: bold;
+}
+article section aside h5:first-child:before {
+	content: '"';
+}
+article section aside h5:first-child:after {
+	content: '"';
+}
+article section aside h5:first-child + h6 {
+	text-align: right;
+	font-size: 120%;
+}
+article section aside h5:first-child + h6:before {
+	content: '--';
+}
+article section aside h5:not(:last-child), article section nav h5:not(:last-child), article section figure figcaption:not(:last-child) {
+	margin-bottom: 1em;
+}
+article section nav ul {
+	list-style-type: lower-roman;
+	list-style-position: outside;
+	padding-left: 2em;
+	font-size: 120%;
+}
+article section nav ul li:not(:last-child) {
+	margin-bottom: .5em;
+}
+article section nav ul li a {
+	text-decoration: underline;
+}
+@media (max-width: 460px) {
+	article section nav, article section aside, article section figure {
+		float: none;
+		width: 100%;
+		clear: both;
+		margin-left: auto;
+		margin-right: auto;
+		padding: 0;
+	}
+}
+article details {
+	outline: none;
+	font-size: 120%;
+	color: #CCCCCC;
+	margin-top: 1em;
+	margin-bottom: .5em;
+	display: block;
+	clear: both;
+}
+article details summary {
+	line-height: 200%;
+	outline: none;
+}
+article section.h-card dl dd:first-of-type {
+	font-weight: bold;
+}
+article section.h-card dl a {
+	border-bottom: 1px dashed #CCCCCC;
+}
+@media (min-width: 960px) {
+	article section.event, article section.h-card {
+		width: 50%;
+		float: left;
+		clear: right;
+	}
+	article section.h-card .h-geo *:not(:empty) + *:not(:empty):before, 
+	article section.h-card .h-adr *:not(:empty) + *:not(:empty):before, 
+	article section.h-card .h-geo *:empty + *:not(:empty):before, 
+	article section.h-card .h-adr *:empty + *:not(:empty):before {
+		content: ',';
+		margin-right: .5em;
+	}
+	article details .p-category:not(:last-child):after {
+		content: ',';
+		margin-right: .5em;
+	}
+	article section.event dl dd:first-of-type {
+		width: 80% !important;
+		margin-right: 10% !important;
+		margin-bottom: 2em !important;
+	}
+	article section.h-card address {
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		max-width: 150px;
+		border-bottom: none;
+	}
+	article section.h-card address a {
+		text-decoration: underline;
+	}
+}
+@media (max-width: 959px) {
+	article section.h-card .h-geo *:not(:empty),
+	article section.h-card .h-adr *:not(:empty) {
+		display: block;
+		clear: both;
+		line-height: 150%;
+	}
+	article section.h-card .h-adr .p-locality, 
+	article section.h-card .h-adr .p-region, 
+	article section.h-card .h-adr .p-postal-code, 
+	article section.h-card .h-adr .p-longitude, 
+	article section.h-card .h-adr .p-latitude, 
+	article section.h-card .h-geo .p-longitude,
+	article section.h-card .h-geo .p-latitude {
+		clear: right;
+		float: left;
+	}
+	article section.h-card .h-adr .p-locality:not(:empty) + .p-region:not(:empty):before, 
+	article section.h-card .h-adr .p-latitude:not(:empty) + .p-longitude:not(:empty):before,
+	article section.h-card .h-geo .p-latitude:not(:empty) + .p-longitude:not(:empty):before {
+		content: ',';
+		margin-right: .5em;
+	}
+	article section.h-card .h-adr .p-postal-code:not(:empty) {
+		margin-left: .5em;
+	}
+}
+@media (max-width: 959px) and (min-width: 461px) {
+	article section.h-card dl dd:first-of-type:before {
+		margin-right: .5em;
+		content: 'Name: ';
+		font-weight: normal;
+	}
+}
+article details dl > *, article section.event dl > *, article section.h-card dl > * {
+	float: left;
+	margin-bottom: 1em;
+}
+article details dl dt, 
+article details summary label, 
+article section.event dl dt, 
+article section.event label, 
+article section.h-card dl dt, 
+article section.h-card label {
+	text-align: right;
+	margin-right: 10px;
+}
+article details dl dt, 
+article details summary label {
+	width: 70px;
+}
+article section.event dl dt, 
+article section.event label, 
+article section.h-card dl dt, 
+article section.h-card label {
+	width: 20%;
+}
+article section.event dl, article section.h-card dl {
+	font-size: 120%;
+}
+article details summary label {
+	padding-left: 9px;
+}
+article details dl, article section.event dl, article section.h-card dl {
+	margin-top: .5em;
+}
+article section.event dl dt:first-of-type, 
+article section.h-card dl dt:first-of-type {
+	display: none;
+}
+article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type {
+	float: right;
+	width: 40%;
+	text-align: left;
+	line-height: 150%;
+}
+@media (max-width: 460px) {
+	article section.event dl dt:first-of-type {
+		display: block;
+		clear: both;
+	}
+	article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type {
+		clear: both;
+		width: 100%;
+		padding-right: 2em;
+	}
+	article section.event dl dd:first-of-type {
+		padding-left: 2em;
+	}
+	article details dl dt, article details summary label, article section.event dl dt, article section.h-card dl dt {
+		font-weight: bold;
+	}
+}
+article details dl > *:nth-child(odd), article section.event dl > *:nth-child(odd), article section.h-card dl > *:nth-child(odd) {
+	clear: left;
+}
+@media (min-width: 461px) {
+	article details dl dt:after, article details summary label:after, article section.event dl dt:after, article section.h-card dl dt:after {
+		content: ':';
+	}
+	article details .h-geo *:not(:empty) + *:not(:empty):before, 
+	article details .h-adr *:not(:empty) + *:not(:empty):before, 
+	article details .h-geo *:empty + *:not(:empty):before, 
+	article details .h-adr *:empty + *:not(:empty):before {
+		content: ',';
+		margin-right: .5em;
+	}
+	article details .p-author:not(:last-child):after, article details .p-category:not(:last-child):after {
+		content: ',';
+		margin-right: .5em;
+	}
+	article details a, article section.event dl a {
+		border-bottom: 1px dashed #CCCCCC;
+	}
+	article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type {
+		background: #F0F0F0;
+		padding: 1em;
+		margin: 1em;
+		border: 3px solid #CCCCCC;
+	}
+	article section.event dl dd:first-of-type:before {
+		margin-right: .5em;
+	}
+	article section.event dl dd:first-of-type:before {
+		content: 'Description: ';
+	}
+}
+@media (max-width: 460px) {
+	article details .h-adr *:not(:empty), 
+	article details .h-geo *:not(:empty), 
+	article details .p-author, 
+	article details .p-category {
+		display: block;
+		clear: both;
+		line-height: 150%;
+	}
+	article details dl dt {
+		line-height: 150%;
+	}
+	article details .h-adr .p-locality, 
+	article details .h-adr .p-region, 
+	article details .h-adr .p-postal-code, 
+	article details .h-adr .p-longitude, 
+	article details .h-adr .p-latitude, 
+	article details .h-geo .p-longitude,
+	article details .h-geo .p-latitude {
+		clear: right;
+		float: left;
+	}
+	article details .h-adr .p-locality:not(:empty) + .p-region:not(:empty):before, 
+	article details .h-adr .p-latitude:not(:empty) + .p-longitude:not(:empty):before,
+	article details .h-geo .p-latitude:not(:empty) + .p-longitude:not(:empty):before {
+		content: ',';
+		margin-right: .5em;
+	}
+	article details .h-adr .p-postal-code:not(:empty) {
+		margin-left: .5em;
+	}
+	article details .p-author:not(:last-of-type), article details .p-category {
+		margin-bottom: .5em;
+	}
+	article details a:not(.h-adr), 
+	article section.event a:not(.h-adr) {
+		text-decoration: underline;
+	}
+}
+body > nav a {
+	font-size: 150%;
+	background: #CCCCCC;
+	border-radius: 6px;
+	padding-top: 1em;
+	padding-bottom: 1em;
+	padding-left: 2em;
+	padding-right: 2em;
+	text-align: center;
+	width: 8em;
+	display: block;
+	clear: none;
+	float: left;
+	-moz-box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	border: 1px solid #C0C0C0;
+}
+body > nav a:active {
+	-moz-box-shadow: inset 4px 4px 4px -2px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset 4px 4px 4px -2px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 4px 4px 4px -2px rgba(0, 0, 0, 0.1);
+}
+body > nav a:hover {
+	background: #DFDFDF;
+}
+body > nav a:first-of-type:not(:only-child) {
+	margin-right: 6em;
+}
+@media (max-width: 720px) {
+	body > nav a:last-of-type:not(:only-child) {
+		float: right;
+	}
+}
+main:only-of-type section.post > *.p-summary a.readmore {
+	display: none;
+}
+main a.readmore {
+	white-space: nowrap;
+}
+main:not(:only-of-type) section.post > *:not(.p-summary), 
+main:not(:only-of-type) section.event dl dt:first-of-type, 
+main:not(:only-of-type) section.h-card dl dt:first-of-type, 
+main:not(:only-of-type) section.event dl dd:first-of-type, 
+main:not(:only-of-type) section.h-card dl dd:first-of-type {
+	display: none;
+}
+main:not(:only-of-type):not(:last-of-type) article {
+	border-bottom: 3px dotted #F0F0F0;
+	margin-bottom: 1em;
+}
+main:not(:only-of-type) section.post > .p-summary:before {
+	content: 'Summary:';
+	margin-right: .5em;
+}
+main:not(:only-of-type) article h3 {
+	border-bottom: 1px dashed #CECECE;
+	width: auto;
+	display: inline;
+}
+@media (min-width: 620px) {
+	main:not(:only-of-type) article section.event, main:not(:only-of-type) article section.h-card {
+		width: 50%;
+		float: left;
+		clear: right;
+	}
+}

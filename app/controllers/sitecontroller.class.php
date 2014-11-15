@@ -4,6 +4,15 @@ class siteController extends XOMBO\dbModelController {
 		return "site";
 	}
 	public static function describe () {
-		return static::search ();
+		return static::all ();
+	}
+	public static function all ($limit = 10, $from = 0) {
+		return static::view (1)->allPosts ($limit, $from);
+	}
+	public static function category ($category, $limit = 10, $from = 0) {
+		return static::view (1)->postsByCategory ($category, $limit, $from);
+	}
+	public static function post ($ID) {	
+		return static::view (1)->postById ($ID);
 	}
 }
