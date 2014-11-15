@@ -4,9 +4,9 @@ use XOMBO\site_post_view as site_post_view;
 use XOMBO\post_category_view as post_category_view;
 use XOMBO\site_menu as site_menu;
 class site extends XOMBO\dbModelDefaults {
-	public $images;
-	public $navigation;
-	public $posts;
+	public $images = array ();
+	public $navigation = array ('next' => '', 'previous' => '', 'menus' => array ());
+	public $posts = array ();
 	function __construct ($ID = NULL) {
 		parent::__construct ($ID);
 		if ($this->ID > 0) {
