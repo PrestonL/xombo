@@ -24,12 +24,14 @@
 				<xsl:if test="string-length(previous)">
 					<a>
 						<xsl:attribute name="href"><xsl:value-of select="previous" /></xsl:attribute>
+						<xsl:attribute name="rel">previous</xsl:attribute>
 						Newer
 					</a>
 				</xsl:if>
 				<xsl:if test="string-length(next)">
 					<a>
 						<xsl:attribute name="href"><xsl:value-of select="next" /></xsl:attribute>
+						<xsl:attribute name="rel">next</xsl:attribute>
 						Older
 					</a>
 				</xsl:if>
@@ -42,7 +44,7 @@
 		</footer>
 	</xsl:template>
 	<xsl:template match="site">
-		<header>		
+		<header class="h-card">
 			<h2>
 				<xsl:apply-templates select="images/image" />
 			</h2>
@@ -52,11 +54,17 @@
 					<a>
 						<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
 						<xsl:attribute name="class">u-url</xsl:attribute>
-						<xsl:attribute name="rel">me</xsl:attribute>
+						<xsl:attribute name="rel">author me</xsl:attribute>
 						<xsl:value-of select="name" />
 					</a>
+					<xsl:if test="/response/result/site/admin=1">
+						<sup>
+							<a href="/admin/addpost">+post</a>
+						</sup>
+					</xsl:if>
 				</h1>
 				<h2>
+					<xsl:attribute name="class">p-note</xsl:attribute>
 					<xsl:value-of select="heading" />
 				</h2>
 			</hgroup>
@@ -65,7 +73,25 @@
 		</header>
 	</xsl:template>
 	<xsl:template match="heading">
-		<h4><xsl:value-of select="content" /></h4>
+		<h4>
+			<xsl:value-of select="content" />
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						-delete
+					</a>
+				</sup>
+			</xsl:if>	
+		</h4>
 	</xsl:template>
 	<xsl:template match="p">
 		<p>
@@ -80,7 +106,109 @@
 					read more...
 				</a>
 			</xsl:if>
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/summaryp/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						@summary
+					</a>					
+					<a>
+						<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						-delete
+					</a>
+				</sup>
+			</xsl:if>
 		</p>
+	</xsl:template>
+	<xsl:template match="li">
+		<li>
+			<xsl:choose>
+				<xsl:when test="strikeout=1">
+					<strike><xsl:value-of select="content" /></strike>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="content" />
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/strikeli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						@strike
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/deleteli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
+						-delete
+					</a>					
+				</sup>
+			</xsl:if>
+		</li>
+	</xsl:template>
+	<xsl:template match="ul">
+		<ul>
+			<xsl:apply-templates select="items/li" />
+		</ul>
+		<xsl:if test="/response/result/site/admin=1">
+			<sup>
+				<a>
+					<xsl:attribute name="href">/admin/addli/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+					+li
+				</a>
+				<a>
+					<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+					@up
+				</a>
+				<a>
+					<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+					@down
+				</a>
+				<a>
+					<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+					-delete
+				</a>
+			</sup>
+		</xsl:if>
+	</xsl:template>
+	<xsl:template match="ol">
+		<ol>
+			<xsl:apply-templates select="items/li" />
+		</ol>
+		<xsl:if test="/response/result/site/admin=1">
+			<sup>
+				<a>
+					<xsl:attribute name="href">/admin/addli/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+					+li
+				</a>
+				<a>
+					<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+					@up
+				</a>
+				<a>
+					<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+					@down
+				</a>
+				<a>
+					<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+					-delete
+				</a>
+			</sup>
+		</xsl:if>
 	</xsl:template>
 	<xsl:template match="components">
 		<xsl:apply-templates select="*" />
@@ -92,7 +220,7 @@
 					<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
 					<img>
 						<xsl:attribute name="src"><xsl:value-of select="src" /></xsl:attribute>
-						<xsl:if test="name(..) = 'aside' or name(..) = 'site'">
+						<xsl:if test="name(../..) = 'aside' or name(../..) = 'site'">
 							<xsl:attribute name="class">u-photo</xsl:attribute>
 						</xsl:if>
 						<xsl:attribute name="alt"><xsl:value-of select="alt" /></xsl:attribute>
@@ -102,7 +230,7 @@
 			<xsl:otherwise>
 				<img>
 					<xsl:attribute name="src"><xsl:value-of select="src" /></xsl:attribute>
-					<xsl:if test="name(..) = 'aside'">
+					<xsl:if test="name(../..) = 'aside' or name(../..) = 'site'">
 						<xsl:attribute name="class">u-photo</xsl:attribute>
 					</xsl:if>
 					<xsl:attribute name="alt"><xsl:value-of select="alt" /></xsl:attribute>
@@ -112,10 +240,10 @@
 	</xsl:template>
 	<xsl:template match="aside">
 		<aside>
-			<xsl:apply-templates select="image" />
-			<xsl:if test="string-length(caption)">
+			<xsl:apply-templates select="images/image" />
+			<xsl:if test="string-length(content)">
 				<h5>
-					<xsl:value-of select="caption" />
+					<xsl:value-of select="content" />
 				</h5>
 			</xsl:if>
 			<xsl:for-each select="authors/author">
@@ -123,35 +251,127 @@
 					<xsl:apply-templates select="." />
 				</h6>
 			</xsl:for-each>
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						-delete
+					</a>
+				</sup>
+			</xsl:if>
 		</aside>
 	</xsl:template>	
 	<xsl:template match="figure">
 		<figure>
-			<xsl:apply-templates select="image" />
+			<xsl:apply-templates select="images/image" />
 			<figcaption>
-				This is another piece of text that accompanies a different image in the figure tag.
+				<xsl:value-of select="content" />
 			</figcaption>
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						-delete
+					</a>
+				</sup>
+			</xsl:if>
 		</figure>
 	</xsl:template>
 	<xsl:template match="nav">
 		<nav>
 			<h5>In this document...</h5>
 			<ul>
-				<xsl:for-each select="/response/result/site/posts/post/sections/section">
+				<xsl:for-each select="/response/result/site/posts/post/sections/section[components/heading]">
 					<li>
 						<a>
 							<xsl:attribute name="href">#<xsl:value-of select="name" /></xsl:attribute>
-							<xsl:value-of select="heading" />
+							<xsl:value-of select="components/heading/content" />
 						</a>
-					</li>				
+					</li>
 				</xsl:for-each>
 			</ul>
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/deletecomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
+						-delete
+					</a>
+				</sup>
+			</xsl:if>
 		</nav>
 	</xsl:template>
 	<xsl:template match="section">
 		<section class="post">
 			<xsl:attribute name="id"><xsl:value-of select="name" /></xsl:attribute>
 			<xsl:apply-templates select="components" />
+			<xsl:if test="/response/result/site/admin=1">
+				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/upsection/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="post_section_ID" /></xsl:attribute>
+						@up
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/downsection/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="post_section_ID" /></xsl:attribute>
+						@down
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addheading/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+heading
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addp/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+p
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addul/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+ul
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addol/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+ol
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addaside/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+aside
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addfigure/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+figure
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addnav/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+nav
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/deletesection/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="post_section_ID" /></xsl:attribute>
+						-delete
+					</a>		
+				</sup>
+			</xsl:if>
 		</section>
 	</xsl:template>
 	<xsl:template match="author">
@@ -159,11 +379,9 @@
 			<xsl:when test="string-length(url)">
 				<a>
 					<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
-					<xsl:if test="string-length(class)">
-						<xsl:attribute name="class"><xsl:value-of select="class" /></xsl:attribute>
-					</xsl:if>
-					<xsl:if test="string-length(rel)">
-						<xsl:attribute name="rel"><xsl:value-of select="rel" /></xsl:attribute>
+					<xsl:attribute name="class">h-card <xsl:if test="name(../..)='post'"> p-author</xsl:if></xsl:attribute>
+					<xsl:if test="string-length(rel) or name(../..)='post'">
+						<xsl:attribute name="rel"><xsl:value-of select="rel" /><xsl:if test="name(../..)='post'"> author</xsl:if></xsl:attribute>
 					</xsl:if>
 					<xsl:value-of select="concat(firstname, ' ' , lastname)" />
 				</a>
@@ -177,6 +395,73 @@
 				</span>								
 			</xsl:otherwise>
 		</xsl:choose>
+	</xsl:template>
+	<xsl:template match="rating">
+		<dt>
+			Rating
+		</dt>
+		<dd class="rating">
+			<img>
+				<xsl:attribute name="src">
+					<xsl:choose>
+						<xsl:when test="value &gt; 0">
+							<xsl:value-of select="on" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="off" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+			</img>
+			<img>
+				<xsl:attribute name="src">
+					<xsl:choose>
+						<xsl:when test="value &gt; 1">
+							<xsl:value-of select="on" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="off" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+			</img>
+			<img>
+				<xsl:attribute name="src">
+					<xsl:choose>
+						<xsl:when test="value &gt; 2">
+							<xsl:value-of select="on" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="off" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+			</img>
+			<img>
+				<xsl:attribute name="src">
+					<xsl:choose>
+						<xsl:when test="value &gt; 3">
+							<xsl:value-of select="on" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="off" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+			</img>
+			<img>
+				<xsl:attribute name="src">
+					<xsl:choose>
+						<xsl:when test="value &gt; 4">
+							<xsl:value-of select="on" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="off" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:attribute>
+			</img>
+		</dd>
 	</xsl:template>
 	<xsl:template match="location" mode="spans">
 		<span class="p-street-address"><xsl:value-of select="address1" /></span>
@@ -245,7 +530,7 @@
 	</xsl:template>
 	<xsl:template match="location" mode="outer">
 		<section class="h-card">
-			<h4>Location</h4>
+			<h4><xsl:value-of select="name" /></h4>
 			<dl>
 				<dt>
 					Name
@@ -265,13 +550,14 @@
 					</xsl:choose>
 				</dd>
 				<xsl:apply-templates select="." mode="inner" />
+				<xsl:apply-templates select="ratings/rating" />
 			</dl>
 			<hr />
 		</section>
 	</xsl:template>
 	<xsl:template match="event">
 		<section class="event">
-			<h4>Event</h4>
+			<h4><xsl:value-of select="name" /></h4>
 			<dl>
 				<dt>
 					Description
@@ -309,6 +595,40 @@
 						<xsl:value-of select="duration" />
 					</time>
 				</dd>
+				<xsl:apply-templates select="ratings/rating" />
+			</dl>
+			<hr />
+		</section>
+	</xsl:template>
+	<xsl:template match="product">
+		<section class="h-product">
+			<h4 class="p-name"><xsl:value-of select="name" /></h4>
+			<dl>
+				<dt>
+					Description
+				</dt>
+				<dd class="p-description">
+					<xsl:value-of select="description" />
+				</dd>
+				<dt>
+					Brand
+				</dt>
+				<dd class="p-brand">
+					<xsl:value-of select="brand" />
+				</dd>
+				<dt>
+					Model No.
+				</dt>
+				<dd class="u-identifier">
+					<xsl:value-of select="identifier" />
+				</dd>
+				<dt>
+					Price
+				</dt>
+				<dd class="p-price">
+					<xsl:value-of select="price" />
+				</dd>
+				<xsl:apply-templates select="ratings/rating" />
 			</dl>
 			<hr />
 		</section>
@@ -316,7 +636,7 @@
 	<xsl:template match="post">
 		<main>
 			<article>
-				<xsl:attribute name="class">h-entry e-content<xsl:if test="count(events/event)"> h-event</xsl:if></xsl:attribute>
+				<xsl:attribute name="class">h-entry<xsl:if test="count(events/event)"> h-event</xsl:if></xsl:attribute>
 				<h3>
 					<a>
 						<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
@@ -326,9 +646,9 @@
 				</h3>
 				<details>
 					<summary>
-						<label>
+						<span>
 							Posted
-						</label>
+						</span>
 						<time>
 							<xsl:attribute name="class">dt-published</xsl:attribute>
 							<xsl:attribute name="datetime"><xsl:value-of select="published" /></xsl:attribute>
@@ -382,7 +702,7 @@
 							<a>
 								<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
 								<xsl:attribute name="class">u-uid</xsl:attribute>
-								<xsl:value-of select="ID" />
+								<xsl:value-of select="site_post_ID" />
 							</a>
 						</dd>
 					</dl>
@@ -390,8 +710,35 @@
 				</details>
 				<xsl:apply-templates select="events/event" />
 				<xsl:apply-templates select="locations/location[string-length(name)&gt;0]" mode="outer" />
+				<xsl:apply-templates select="products/product" />
 				<hr />
-				<xsl:apply-templates select="sections/section" />
+				<span class="e-content">
+					<xsl:apply-templates select="sections/section" />
+					<xsl:if test="/response/result/site/admin=1">
+						<sup>
+							<a>
+								<xsl:attribute name="href">/admin/addsection/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+								+section
+							</a>
+							<a>
+								<xsl:attribute name="href">/admin/addevent/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+								+event
+							</a>
+							<a>
+								<xsl:attribute name="href">/admin/addlocation/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+								+location
+							</a>
+							<a>
+								<xsl:attribute name="href">/admin/addproduct/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+								+product
+							</a>
+							<a>
+								<xsl:attribute name="href">/admin/deletepost/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+								-delete
+							</a>
+						</sup>
+					</xsl:if>
+				</span>
 				<hr />
 			</article>
 		</main>

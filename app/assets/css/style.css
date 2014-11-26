@@ -29,6 +29,10 @@ body {
     -ms-user-select: inherit;
     user-select: inherit;
 }
+sup {
+	display: block;
+	clear: both;
+}
 a {
 	color: inherit;
 }
@@ -43,6 +47,9 @@ body > input[type="checkbox"], body > input[type="radio"] {
 }
 strong, h3, h4 {
 	font-weight: bold;
+}
+strike {
+	text-decoration: line-through;
 }
 body > header, main > article, body > footer, body > nav {
 	text-align: left;
@@ -79,6 +86,12 @@ header hgroup h1 {
 	font-size: 240%;
 	margin-bottom: .5em;
 }
+header hgroup h1 a {
+	border-bottom: 3px dotted #F0F0F0;
+}
+header hgroup h1 a:hover {
+	border-bottom: 3px solid #CCCCCC;
+}
 header hgroup h2 {
 	font-size: 150%;
 	margin-bottom: .5em;
@@ -87,18 +100,38 @@ header ul, footer ul {
 	list-style-type: none;
 	font-size: 160%;
 	display: block;
-	clear: right;
-	float: right;
 }
 header ul li, footer ul li {
 	float: left;
 }
+header ul li a, footer ul li a {
+	border-bottom: 2px dotted #CCCCCC;
+}
+header ul li a:hover, footer ul li a:hover {
+	border-bottom: 2px solid #666666;
+}
 header ul li:first-of-type, footer ul li:first-of-type {
 	display: none;
+}
+@media (min-width: 461px) {
+	header ul, footer ul {
+		clear: right;
+		float: right;
+	}
 }
 @media (max-width: 460px) {
 	header ul li:first-of-type, footer ul li:first-of-type {
 		display: block;
+	}
+	header ul li:first-of-type label, footer ul li:first-of-type label {
+		border-bottom: 2px dotted #CCCCCC;
+	}
+	header ul li:first-of-type label:hover, footer ul li:first-of-type label:hover {
+		border-bottom: 2px solid #666666;
+	}
+	header ul li, footer ul li {
+		width: 100%;
+		text-align: center;
 	}
 	header ul li:not(:first-of-type), footer ul li:not(:first-of-type) {
 		display: none;
@@ -109,8 +142,6 @@ header ul li:first-of-type, footer ul li:first-of-type {
 	}
 	input[id="checkbox_menu"]:checked ~ header ul li, input[id="checkbox_menu"]:checked ~ footer ul li {
 		display: block;
-		width: 100%;
-		text-align: center;
 	}
 	input[id="checkbox_menu"]:checked ~ header ul li:not(:last-child), input[id="checkbox_menu"]:checked ~ footer ul li:not(:last-child) {
 		margin-bottom: .5em;
@@ -132,7 +163,10 @@ article h3 {
 	display: block;
 	font-size: 200%;
 }
-article section:not(:last-of-type) {
+article h3:empty, article h3 *:empty, article section h4:empty, article section h4 *:empty {
+	display: none;
+}
+article section.post:not(:last-of-type) {
 	margin-top: 2em;
 	margin-bottom: 2em;
 }
@@ -146,9 +180,25 @@ article section p {
 	line-height: 150%;
 }
 article section p a {
-	border-bottom: 1px dashed #CECECE;
+	border-bottom: 1px dotted #CECECE;
 }
-input[type="text"], input[type="email"], textarea, article h3, article details summary *:not(label), article details dl dd, article section h4, article section p, article section aside h5, article section aside h6, article section figure > figcaption, article section dl dd {
+article section ul, article section ol {
+	font-size: 150%;
+	margin-left: 2em;
+	margin-right: 2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+article section ul {
+	list-style: square;
+}
+article section ul li, article section ol li {
+	line-height: 150%;
+}
+article section ul li:not(:last-of-type), article section ol li:not(:last-of-type) {
+	margin-bottom: 1em;
+}
+input[type="text"], input[type="email"], textarea, article h3, article details summary *:not(label), article details dl dd, article section h4, article section p, article section aside h5, article section aside h6, article section figure > figcaption, article section dl dd, article section ul li {
     -webkit-touch-callout: text;
     -webkit-user-select: text;
     -khtml-user-select: text;
@@ -218,7 +268,10 @@ article section nav ul li:not(:last-child) {
 	margin-bottom: .5em;
 }
 article section nav ul li a {
-	text-decoration: underline;
+	border-bottom: 1px dotted #CCCCCC;
+}
+article section nav ul li a:hover {
+	border-bottom: 1px solid #666666;
 }
 @media (max-width: 460px) {
 	article section nav, article section aside, article section figure {
@@ -235,22 +288,33 @@ article details {
 	font-size: 120%;
 	color: #CCCCCC;
 	margin-top: 1em;
-	margin-bottom: .5em;
+	margin-bottom: 1em;
 	display: block;
 	clear: both;
 }
 article details summary {
 	line-height: 200%;
 	outline: none;
+	cursor: pointer;
+}
+article details summary * {
+	cursor: pointer !important;
+}
+article section dl dd.rating img {
+	width: 16px;
+	height: 16px;
 }
 article section.h-card dl dd:first-of-type {
 	font-weight: bold;
 }
 article section.h-card dl a {
-	border-bottom: 1px dashed #CCCCCC;
+	border-bottom: 1px dotted #CCCCCC;
+}
+article section.h-card dl a:hover {
+	border-bottom: 1px solid #666666;
 }
 @media (min-width: 960px) {
-	article section.event, article section.h-card {
+	article section.event, article section.h-card, article section.h-product {
 		width: 50%;
 		float: left;
 		clear: right;
@@ -266,7 +330,7 @@ article section.h-card dl a {
 		content: ',';
 		margin-right: .5em;
 	}
-	article section.event dl dd:first-of-type {
+	article section.event dl dd:first-of-type, article section.h-product dl dd:first-of-type {
 		width: 80% !important;
 		margin-right: 10% !important;
 		margin-bottom: 2em !important;
@@ -275,11 +339,13 @@ article section.h-card dl a {
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
-		max-width: 150px;
 		border-bottom: none;
 	}
-	article section.h-card address a {
-		text-decoration: underline;
+	main:not(:only-of-type) article section.h-card address {
+		max-width: 20em;
+	}
+	main:only-of-type article section.h-card address {
+		max-width: 10em;
 	}
 }
 @media (max-width: 959px) {
@@ -316,70 +382,81 @@ article section.h-card dl a {
 		font-weight: normal;
 	}
 }
-article details dl > *, article section.event dl > *, article section.h-card dl > * {
+article details dl > *, article section.event dl > *, article section.h-card dl > *, article section.h-product dl > * {
 	float: left;
 	margin-bottom: 1em;
 }
 article details dl dt, 
-article details summary label, 
+article details summary span, 
 article section.event dl dt, 
 article section.event label, 
 article section.h-card dl dt, 
-article section.h-card label {
+article section.h-card label,
+article section.h-product dl dt, 
+article section.h-product label {
 	text-align: right;
 	margin-right: 10px;
 }
 article details dl dt, 
-article details summary label {
+article details summary span {
 	width: 70px;
 }
 article section.event dl dt, 
 article section.event label, 
 article section.h-card dl dt, 
-article section.h-card label {
-	width: 20%;
+article section.h-card label, 
+article section.h-product dl dt, 
+article section.h-product label {
+	width: 25%;
 }
-article section.event dl, article section.h-card dl {
+article section.event dl, article section.h-card dl, article section.h-product dl {
 	font-size: 120%;
 }
-article details summary label {
+main:not(:only-of-type) article details dl {
+	display: none;
+}
+main:not(:only-of-type) article details summary::-webkit-details-marker {
+	display: none;
+}
+article details summary span {
 	padding-left: 9px;
 }
-article details dl, article section.event dl, article section.h-card dl {
+article details dl, article section.event dl, article section.h-card dl, article section.h-product dl {
 	margin-top: .5em;
 }
 article section.event dl dt:first-of-type, 
-article section.h-card dl dt:first-of-type {
+article section.h-card dl dt:first-of-type, 
+article section.h-product dl dt:first-of-type {
 	display: none;
 }
-article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type {
+article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type, article section.h-product dl dd:first-of-type {
 	float: right;
 	width: 40%;
 	text-align: left;
 	line-height: 150%;
 }
 @media (max-width: 460px) {
-	article section.event dl dt:first-of-type {
+	article section.event dl dt:first-of-type, article section.h-product dl dt:first-of-type {
 		display: block;
 		clear: both;
 	}
-	article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type {
+	article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type, article section.h-product dl dd:first-of-type {
 		clear: both;
 		width: 100%;
 		padding-right: 2em;
 	}
-	article section.event dl dd:first-of-type {
+	article section.event dl dd:first-of-type, article section.h-product dl dd:first-of-type {
 		padding-left: 2em;
 	}
-	article details dl dt, article details summary label, article section.event dl dt, article section.h-card dl dt {
+	article details dl dt, article details summary span, article section.event dl dt, article section.h-card dl dt, article section.h-product dl dt {
 		font-weight: bold;
 	}
 }
-article details dl > *:nth-child(odd), article section.event dl > *:nth-child(odd), article section.h-card dl > *:nth-child(odd) {
+article details dl > *:nth-child(odd), article section.event dl > *:nth-child(odd), article section.h-card dl > *:nth-child(odd), article section.h-product dl > *:nth-child(odd) {
 	clear: left;
 }
 @media (min-width: 461px) {
-	article details dl dt:after, article details summary label:after, article section.event dl dt:after, article section.h-card dl dt:after {
+	article details dl dt:after, article details summary span:after, article section.event dl dt:after, article section.h-card dl dt:after,  article section.h-product dl dt:after {
 		content: ':';
 	}
 	article details .h-geo *:not(:empty) + *:not(:empty):before, 
@@ -393,19 +470,23 @@ article details dl > *:nth-child(odd), article section.event dl > *:nth-child(od
 		content: ',';
 		margin-right: .5em;
 	}
-	article details a, article section.event dl a {
-		border-bottom: 1px dashed #CCCCCC;
+	article details a, article section.event dl a, article section.h-product dl a {
+		border-bottom: 1px dotted #CCCCCC;
 	}
-	article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type {
+	article details a:hover, article section.event dl a:hover, article section.h-product dl a:hover {
+		color: #666666;
+		border-bottom: 1px solid #666666;
+	}
+	article section.event dl dd:first-of-type, article section.h-card dl dd:first-of-type, article section.h-product dl dd:first-of-type {
 		background: #F0F0F0;
 		padding: 1em;
 		margin: 1em;
 		border: 3px solid #CCCCCC;
 	}
-	article section.event dl dd:first-of-type:before {
+	article section.event dl dd:first-of-type:before, article section.h-product dl dd:first-of-type:before {
 		margin-right: .5em;
 	}
-	article section.event dl dd:first-of-type:before {
+	article section.event dl dd:first-of-type:before, article section.h-product dl dd:first-of-type:before {
 		content: 'Description: ';
 	}
 }
@@ -444,7 +525,8 @@ article details dl > *:nth-child(odd), article section.event dl > *:nth-child(od
 		margin-bottom: .5em;
 	}
 	article details a:not(.h-adr), 
-	article section.event a:not(.h-adr) {
+	article section.event a:not(.h-adr), 
+	article section.h-product a:not(.h-adr) {
 		text-decoration: underline;
 	}
 }
@@ -474,12 +556,17 @@ body > nav a:active {
 body > nav a:hover {
 	background: #DFDFDF;
 }
-body > nav a:first-of-type:not(:only-child) {
-	margin-right: 6em;
+body > nav a:first-of-type:not(:only-of-type) {
+	margin-right: 2em;
 }
 @media (max-width: 720px) {
-	body > nav a:last-of-type:not(:only-child) {
-		float: right;
+	body > nav a[rel="next"] {
+		float: right !important;
+	}
+}
+@media (min-width: 721px) {
+	body > nav a[rel="next"]:only-of-type {
+		margin-left: 10em;
 	}
 }
 main:only-of-type section.post > *.p-summary a.readmore {
@@ -490,26 +577,32 @@ main a.readmore {
 }
 main:not(:only-of-type) section.post > *:not(.p-summary), 
 main:not(:only-of-type) section.event dl dt:first-of-type, 
-main:not(:only-of-type) section.h-card dl dt:first-of-type, 
 main:not(:only-of-type) section.event dl dd:first-of-type, 
-main:not(:only-of-type) section.h-card dl dd:first-of-type {
+main:not(:only-of-type) section.h-card dl dt:first-of-type, 
+main:not(:only-of-type) section.h-card dl dd:first-of-type, 
+main:not(:only-of-type) section.h-product dl dt:first-of-type, 
+main:not(:only-of-type) section.h-product dl dd:first-of-type {
 	display: none;
 }
-main:not(:only-of-type):not(:last-of-type) article {
-	border-bottom: 3px dotted #F0F0F0;
-	margin-bottom: 1em;
+main:not(:only-of-type):not(:last-of-type) article > hr:last-of-type {
+	border-bottom: 5px double #F0F0F0;
+	margin-top: 3em;
 }
-main:not(:only-of-type) section.post > .p-summary:before {
+main:not(:only-of-type) section.post:not(:only-of-type) > .p-summary:before {
 	content: 'Summary:';
 	margin-right: .5em;
 }
-main:not(:only-of-type) article h3 {
-	border-bottom: 1px dashed #CECECE;
-	width: auto;
-	display: inline;
+main:not(:only-of-type) section.post:only-of-type > .p-summary {
+	font-size: 2em;
+}
+main:not(:only-of-type) article h3 a {
+	border-bottom: 2px dotted #CCCCCC;
+}
+main:not(:only-of-type) article h3 a:hover {
+	border-bottom: 2px solid #666666;
 }
 @media (min-width: 620px) {
-	main:not(:only-of-type) article section.event, main:not(:only-of-type) article section.h-card {
+	main:not(:only-of-type) article section.event, main:not(:only-of-type) article section.h-card, main:not(:only-of-type) article section.h-product {
 		width: 50%;
 		float: left;
 		clear: right;

@@ -1,5 +1,5 @@
 <?php
-class location extends XOMBO\dbModelDefaults {
+class location extends ratable {
 	public $url;
 	function __construct ($ID = NULL) {
 		parent::__construct ($ID);

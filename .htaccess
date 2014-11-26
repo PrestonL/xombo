@@ -27,7 +27,6 @@ RewriteRule .* index.php [QSA,L]
 
 RewriteCond %{HTTP_USER_AGENT} ^(.*)Lynx/(.*)$ [NC,OR]
 RewriteCond %{HTTP_USER_AGENT} ^(.*)Silk(.*)$ [NC,OR]
-RewriteCond %{HTTP_USER_AGENT} ^(.*)Firefox/[3-5](.*)$ [NC,OR]
 RewriteCond %{HTTP_USER_AGENT} ^(.*)MSIE\ [1-9](.*)$ [NC,OR]
 RewriteCond %{HTTP_USER_AGENT} ^(.*)Opera/[1-8](.*)$ [NC,OR]
 RewriteCond %{HTTP_USER_AGENT} ^(.*)Android(.*)$ [NC,OR]
