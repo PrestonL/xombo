@@ -9,13 +9,18 @@
 				</label>
 			</li>
 			<xsl:for-each select="menu">
-			<li>
-				<a>
-					<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
-					<xsl:value-of select="name" />
-				</a>
-			</li>
+				<li>
+					<a>
+						<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
+						<xsl:value-of select="name" />
+					</a>
+				</li>
 			</xsl:for-each>
+			<xsl:if test="/response/result/site/admin=1">
+				<li>
+					<a href="/admin/logout">Logout</a>
+				</li>
+			</xsl:if>
 		</ul>
 	</xsl:template>
 	<xsl:template match="navigation">
@@ -73,9 +78,18 @@
 		</header>
 	</xsl:template>
 	<xsl:template match="heading">
-		<h4>
-			<xsl:value-of select="content" />
-			<xsl:if test="/response/result/site/admin=1">
+		<xsl:choose>
+			<xsl:when test="/response/result/site/admin=1">
+				<form>
+					<xsl:attribute name="action">/admin/updateheading/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+					<xsl:attribute name="method">POST</xsl:attribute>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">content</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="content" /></xsl:attribute>
+					</input>
+					<input type="submit" value="Save" />
+				</form>
 				<sup>
 					<a>
 						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
@@ -90,23 +104,29 @@
 						-delete
 					</a>
 				</sup>
-			</xsl:if>	
-		</h4>
+			</xsl:when>
+			<xsl:otherwise>
+				<h4>
+					<xsl:value-of select="content" />
+				</h4>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="p">
-		<p>
-			<xsl:if test="summary and summary != 'false' and summary != 0">
-				<xsl:attribute name="class">p-summary</xsl:attribute>
-			</xsl:if>
-			<xsl:value-of select="content" />
-			<xsl:if test="summary and summary != 'false' and summary != 0">
-				<a>
-					<xsl:attribute name="class">readmore</xsl:attribute>
-					<xsl:attribute name="href"><xsl:value-of select="../../../../url" /></xsl:attribute>
-					read more...
-				</a>
-			</xsl:if>
-			<xsl:if test="/response/result/site/admin=1">
+		<xsl:choose>
+			<xsl:when test="/response/result/site/admin=1">
+				<form>
+					<xsl:attribute name="action">/admin/updatep/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+					<xsl:attribute name="method">POST</xsl:attribute>
+					<textarea>
+						<xsl:attribute name="name">content</xsl:attribute>
+						<xsl:if test="summary and summary != 'false' and summary != 0">
+							<xsl:attribute name="class">p-summary</xsl:attribute>
+						</xsl:if>
+						<xsl:value-of select="content" />
+					</textarea>
+					<input type="submit" value="Save" />
+				</form>
 				<sup>
 					<a>
 						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
@@ -125,39 +145,73 @@
 						-delete
 					</a>
 				</sup>
-			</xsl:if>
-		</p>
+			</xsl:when>
+			<xsl:otherwise>
+				<p>
+					<xsl:if test="summary and summary != 'false' and summary != 0">
+						<xsl:attribute name="class">p-summary</xsl:attribute>
+					</xsl:if>
+					<xsl:value-of select="content" />
+					<xsl:if test="summary and summary != 'false' and summary != 0">
+						<a>
+							<xsl:attribute name="class">readmore</xsl:attribute>
+							<xsl:attribute name="href"><xsl:value-of select="../../../../url" /></xsl:attribute>
+							read more...
+						</a>
+					</xsl:if>
+				</p>
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	<xsl:template match="li">
 		<li>
 			<xsl:choose>
-				<xsl:when test="strikeout=1">
-					<strike><xsl:value-of select="content" /></strike>
+				<xsl:when test="/response/result/site/admin=1">
+					<form>
+						<xsl:attribute name="action">/admin/updateli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						<xsl:attribute name="method">POST</xsl:attribute>
+						<input>
+							<xsl:attribute name="type">text</xsl:attribute>
+							<xsl:attribute name="name">content</xsl:attribute>
+							<xsl:attribute name="value"><xsl:value-of select="content" /></xsl:attribute>
+							<xsl:choose>
+								<xsl:when test="strikeout=1">
+									<xsl:attribute name="class">strikeout</xsl:attribute>
+								</xsl:when>
+							</xsl:choose>
+						</input>
+						<input type="submit" value="Save" />
+					</form>
+					<sup>
+						<a>
+							<xsl:attribute name="href">/admin/upli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
+							@up
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/downli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
+							@down
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/strikeli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+							@strike
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/deleteli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
+							-delete
+						</a>					
+					</sup>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="content" />
+					<xsl:choose>
+						<xsl:when test="strikeout=1">
+							<strike><xsl:value-of select="content" /></strike>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="content" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:otherwise>
 			</xsl:choose>
-			<xsl:if test="/response/result/site/admin=1">
-				<sup>
-					<a>
-						<xsl:attribute name="href">/admin/upli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
-						@up
-					</a>
-					<a>
-						<xsl:attribute name="href">/admin/downli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
-						@down
-					</a>
-					<a>
-						<xsl:attribute name="href">/admin/strikeli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
-						@strike
-					</a>
-					<a>
-						<xsl:attribute name="href">/admin/deleteli/<xsl:value-of select="../../../../../../site_post_ID" />/<xsl:value-of select="ul_li_ID" /></xsl:attribute>
-						-delete
-					</a>					
-				</sup>
-			</xsl:if>
 		</li>
 	</xsl:template>
 	<xsl:template match="ul">
@@ -241,18 +295,36 @@
 	<xsl:template match="aside">
 		<aside>
 			<xsl:apply-templates select="images/image" />
-			<xsl:if test="string-length(content)">
-				<h5>
-					<xsl:value-of select="content" />
-				</h5>
-			</xsl:if>
-			<xsl:for-each select="authors/author">
-				<h6>
-					<xsl:apply-templates select="." />
-				</h6>
-			</xsl:for-each>
+			<xsl:choose>
+				<xsl:when test="/response/result/site/admin=1">
+					<form>
+						<xsl:attribute name="action">/admin/updateaside/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						<xsl:attribute name="method">POST</xsl:attribute>
+						<textarea>
+							<xsl:attribute name="name">content</xsl:attribute>
+							<xsl:value-of select="content" />
+						</textarea>
+						<input type="submit" value="Save" />
+					</form>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:if test="string-length(content)">
+						<h5>
+							<xsl:value-of select="content" />
+						</h5>
+					</xsl:if>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test="/response/result/site/admin=1">
 				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/addasideimage/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+image
+					</a>
+					<a>
+						<xsl:attribute name="href">/admin/addasideauthor/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+author
+					</a>
 					<a>
 						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
 						@up
@@ -267,16 +339,41 @@
 					</a>
 				</sup>
 			</xsl:if>
+			<xsl:for-each select="authors/author">
+				<h6>
+					<xsl:apply-templates select="." />
+				</h6>
+			</xsl:for-each>
 		</aside>
 	</xsl:template>	
 	<xsl:template match="figure">
 		<figure>
 			<xsl:apply-templates select="images/image" />
-			<figcaption>
-				<xsl:value-of select="content" />
-			</figcaption>
+			<xsl:choose>
+				<xsl:when test="/response/result/site/admin=1">
+					<form>
+						<xsl:attribute name="action">/admin/updateaside/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						<xsl:attribute name="method">POST</xsl:attribute>
+						<input>
+							<xsl:attribute name="type">text</xsl:attribute>
+							<xsl:attribute name="name">content</xsl:attribute>
+							<xsl:attribute name="value"><xsl:value-of select="content" /></xsl:attribute>
+						</input>
+						<input type="submit" value="Save" />
+					</form>
+				</xsl:when>
+				<xsl:otherwise>
+					<figcaption>
+						<xsl:value-of select="content" />
+					</figcaption>
+				</xsl:otherwise>
+			</xsl:choose>
 			<xsl:if test="/response/result/site/admin=1">
 				<sup>
+					<a>
+						<xsl:attribute name="href">/admin/addasideimage/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						+image
+					</a>
 					<a>
 						<xsl:attribute name="href">/admin/upcomponent/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="section_component_ID" /></xsl:attribute>
 						@up
@@ -391,7 +488,7 @@
 					<xsl:if test="string-length(class)">
 						<xsl:attribute name="class"><xsl:value-of select="class" /></xsl:attribute>
 					</xsl:if>
-					<xsl:value-of select="name" />
+					<xsl:value-of select="concat(firstname, ' ' , lastname)" />
 				</span>								
 			</xsl:otherwise>
 		</xsl:choose>
@@ -530,13 +627,48 @@
 	</xsl:template>
 	<xsl:template match="location" mode="outer">
 		<section class="h-card">
-			<h4><xsl:value-of select="name" /></h4>
+			<xsl:choose>
+				<xsl:when test="/response/result/site/admin=1">
+					<form>
+						<xsl:attribute name="action">/admin/updatelocation/name/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						<xsl:attribute name="method">POST</xsl:attribute>
+						<input>
+							<xsl:attribute name="type">text</xsl:attribute>
+							<xsl:attribute name="name">name</xsl:attribute>
+							<xsl:attribute name="value"><xsl:value-of select="name" /></xsl:attribute>
+						</input>
+						<input type="submit" value="Save" />
+					</form>
+				</xsl:when>
+				<xsl:otherwise>
+					<h4><xsl:value-of select="name" /></h4>
+				</xsl:otherwise>
+			</xsl:choose>
 			<dl>
 				<dt>
-					Name
+					<xsl:choose>
+						<xsl:when test="/response/result/site/admin=1">
+							Website
+						</xsl:when>
+						<xsl:otherwise>
+							Name
+						</xsl:otherwise>
+					</xsl:choose>
 				</dt>
 				<dd class="p-name">
 					<xsl:choose>
+						<xsl:when test="/response/result/site/admin=1">
+							<form>
+								<xsl:attribute name="action">/admin/updatelocation/website/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+								<xsl:attribute name="method">POST</xsl:attribute>
+								<input>
+									<xsl:attribute name="type">text</xsl:attribute>
+									<xsl:attribute name="name">website</xsl:attribute>
+									<xsl:attribute name="value"><xsl:value-of select="website" /></xsl:attribute>
+								</input>
+								<input type="submit" value="Save" />
+							</form>
+						</xsl:when>
 						<xsl:when test="string-length(website)">
 							<a>
 								<xsl:attribute name="href"><xsl:value-of select="website" /></xsl:attribute>
@@ -557,33 +689,97 @@
 	</xsl:template>
 	<xsl:template match="event">
 		<section class="event">
-			<h4><xsl:value-of select="name" /></h4>
+			<xsl:choose>
+				<xsl:when test="/response/result/site/admin=1">
+					<form>
+						<xsl:attribute name="action">/admin/updateevent/name/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						<xsl:attribute name="method">POST</xsl:attribute>
+						<input>
+							<xsl:attribute name="type">text</xsl:attribute>
+							<xsl:attribute name="name">name</xsl:attribute>
+							<xsl:attribute name="value"><xsl:value-of select="name" /></xsl:attribute>
+						</input>
+						<input type="submit" value="Save" />
+					</form>
+				</xsl:when>
+				<xsl:otherwise>
+					<h4><xsl:value-of select="name" /></h4>
+				</xsl:otherwise>
+			</xsl:choose>
 			<dl>
 				<dt>
 					Description
 				</dt>
 				<dd class="p-description">
-					<xsl:value-of select="description" />
+					<xsl:choose>
+						<xsl:when test="/response/result/site/admin=1">
+							<form>
+								<xsl:attribute name="action">/admin/updateevent/description/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+								<xsl:attribute name="method">POST</xsl:attribute>
+								<input>
+									<xsl:attribute name="type">text</xsl:attribute>
+									<xsl:attribute name="name">description</xsl:attribute>
+									<xsl:attribute name="value"><xsl:value-of select="description" /></xsl:attribute>
+								</input>
+								<input type="submit" value="Save" />
+							</form>
+						</xsl:when>
+						<xsl:otherwise>							
+							<xsl:value-of select="description" />
+						</xsl:otherwise>
+					</xsl:choose>
 				</dd>
 				<dt>
 					Start Time
 				</dt>
 				<dd>
-					<time>
-						<xsl:attribute name="class">dt-start</xsl:attribute>
-						<xsl:attribute name="datetime"><xsl:value-of select="start" /></xsl:attribute>
-						<xsl:value-of select="start" />
-					</time>
+					<xsl:choose>
+						<xsl:when test="/response/result/site/admin=1">
+							<form>
+								<xsl:attribute name="action">/admin/updateevent/start/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+								<xsl:attribute name="method">POST</xsl:attribute>
+								<input>
+									<xsl:attribute name="type">text</xsl:attribute>
+									<xsl:attribute name="name">start</xsl:attribute>
+									<xsl:attribute name="value"><xsl:value-of select="start" /></xsl:attribute>
+								</input>
+								<input type="submit" value="Save" />
+							</form>
+						</xsl:when>
+						<xsl:otherwise>							
+							<time>
+								<xsl:attribute name="class">dt-start</xsl:attribute>
+								<xsl:attribute name="datetime"><xsl:value-of select="start" /></xsl:attribute>
+								<xsl:value-of select="start" />
+							</time>
+						</xsl:otherwise>
+					</xsl:choose>
 				</dd>
 				<dt>
 					End Time
 				</dt>
 				<dd>
-					<time>
-						<xsl:attribute name="class">dt-end</xsl:attribute>
-						<xsl:attribute name="datetime"><xsl:value-of select="end" /></xsl:attribute>
-						<xsl:value-of select="end" />
-					</time>
+					<xsl:choose>
+						<xsl:when test="/response/result/site/admin=1">
+							<form>
+								<xsl:attribute name="action">/admin/updateevent/end/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+								<xsl:attribute name="method">POST</xsl:attribute>
+								<input>
+									<xsl:attribute name="type">text</xsl:attribute>
+									<xsl:attribute name="name">end</xsl:attribute>
+									<xsl:attribute name="value"><xsl:value-of select="end" /></xsl:attribute>
+								</input>
+								<input type="submit" value="Save" />
+							</form>
+						</xsl:when>
+						<xsl:otherwise>							
+							<time>
+								<xsl:attribute name="class">dt-end</xsl:attribute>
+								<xsl:attribute name="datetime"><xsl:value-of select="end" /></xsl:attribute>
+								<xsl:value-of select="end" />
+							</time>
+						</xsl:otherwise>
+					</xsl:choose>
 				</dd>
 				<dt>
 					Duration
@@ -637,13 +833,29 @@
 		<main>
 			<article>
 				<xsl:attribute name="class">h-entry<xsl:if test="count(events/event)"> h-event</xsl:if></xsl:attribute>
-				<h3>
-					<a>
-						<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
-						<xsl:attribute name="class">u-url p-name</xsl:attribute>
-						<xsl:value-of select="name" />
-					</a>
-				</h3>
+				<xsl:choose>
+					<xsl:when test="/response/result/site/admin=1 and count(../post) = 1">
+						<form>
+							<xsl:attribute name="action">/admin/renamepost/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+							<xsl:attribute name="method">POST</xsl:attribute>
+							<input>
+								<xsl:attribute name="type">text</xsl:attribute>
+								<xsl:attribute name="name">name</xsl:attribute>
+								<xsl:attribute name="value"><xsl:value-of select="name" /></xsl:attribute>
+							</input>
+							<input type="submit" value="Save" />
+						</form>
+					</xsl:when>
+					<xsl:otherwise>
+						<h3>
+							<a>
+								<xsl:attribute name="href"><xsl:value-of select="url" /></xsl:attribute>
+								<xsl:attribute name="class">u-url p-name</xsl:attribute>
+								<xsl:value-of select="name" />
+							</a>
+						</h3>
+					</xsl:otherwise>
+				</xsl:choose>
 				<details>
 					<summary>
 						<span>
@@ -714,31 +926,31 @@
 				<hr />
 				<span class="e-content">
 					<xsl:apply-templates select="sections/section" />
-					<xsl:if test="/response/result/site/admin=1">
-						<sup>
-							<a>
-								<xsl:attribute name="href">/admin/addsection/<xsl:value-of select="site_post_ID" /></xsl:attribute>
-								+section
-							</a>
-							<a>
-								<xsl:attribute name="href">/admin/addevent/<xsl:value-of select="site_post_ID" /></xsl:attribute>
-								+event
-							</a>
-							<a>
-								<xsl:attribute name="href">/admin/addlocation/<xsl:value-of select="site_post_ID" /></xsl:attribute>
-								+location
-							</a>
-							<a>
-								<xsl:attribute name="href">/admin/addproduct/<xsl:value-of select="site_post_ID" /></xsl:attribute>
-								+product
-							</a>
-							<a>
-								<xsl:attribute name="href">/admin/deletepost/<xsl:value-of select="site_post_ID" /></xsl:attribute>
-								-delete
-							</a>
-						</sup>
-					</xsl:if>
 				</span>
+				<xsl:if test="/response/result/site/admin=1 and count(../post) = 1">
+					<sup>
+						<a>
+							<xsl:attribute name="href">/admin/addsection/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+							+section
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/addevent/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+							+event
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/addlocation/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+							+location
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/addproduct/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+							+product
+						</a>
+						<a>
+							<xsl:attribute name="href">/admin/deletepost/<xsl:value-of select="site_post_ID" /></xsl:attribute>
+							-delete
+						</a>
+					</sup>
+				</xsl:if>
 				<hr />
 			</article>
 		</main>

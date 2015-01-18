@@ -25,6 +25,7 @@ class admin extends XOMBO\controller {
 		static::redirect ("/");
 	}
 	public static function addpost () {
+		$site = new site (1);
 		$site_post = $site->createPost ();
 		static::redirect ("/site/post/" . $site_post->ID);
 	}
@@ -41,6 +42,17 @@ class admin extends XOMBO\controller {
 		}
 		throw new exception ("Could not find site_post");
 	}
+	public static function renamepost ($site_post_ID) {
+		$name = array_key_exists ("name", $_POST) ? $_POST['name'] : "";
+		$site_post = new site_post ($site_post_ID);
+		if ($site_post->ID > 0) {
+			$post = new post ($site_post->post_ID);
+			$post->name = $name;
+			$post->save ();
+			static::redirect ("/site/post/" . $site_post->ID);
+		}
+		throw new exception ("Could not find site_post");
+	}
 	public static function addsection ($site_post_ID) {
 		$site_post = new site_post ($site_post_ID);
 		if ($site_post->ID > 0) {
@@ -50,6 +62,63 @@ class admin extends XOMBO\controller {
 		}
 		throw new exception ("Invalid site post.");
 	}
+	public static function addevent ($site_post_ID) {
+		$site_post = new site_post ($site_post_ID); 
+		if ($site_post->ID > 0) {
+			$post = new post ($site_post->post_ID);
+			$post_event = $post->createEvent ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid site post.");
+	}
+	public static function updateevent ($field, $site_post_ID, $event_ID) {
+		$value = array_key_exists ($field, $_POST) ? $_POST[$field] : "";
+		$event = new event ($event_ID);
+		if ($event->ID > 0) {
+			$event->{$field} = $value;
+			$event->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid event ID.");
+	}
+	public static function addlocation ($site_post_ID) {
+		$site_post = new site_post ($site_post_ID); 
+		if ($site_post->ID > 0) {
+			$post = new post ($site_post->post_ID);
+			$post_location = $post->createLocation ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid site post.");
+	}
+	public static function updatelocation ($field, $site_post_ID, $location_ID) {
+		$value = array_key_exists ($field, $_POST) ? $_POST[$field] : "";
+		$location = new location ($location_ID);
+		if ($location->ID > 0) {
+			$location->{$field} = $value;
+			$location->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid location ID.");
+	}
+	public static function addproduct ($site_post_ID) {
+		$site_post = new site_post ($site_post_ID); 
+		if ($site_post->ID > 0) {
+			$post = new post ($site_post->post_ID);
+			$post_product = $post->createProduct ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid site post.");
+	}
+	public static function updateproduct ($field, $site_post_ID, $product_ID) {
+		$value = array_key_exists ($field, $_POST) ? $_POST[$field] : "";
+		$product = new product ($product_ID);
+		if ($product->ID > 0) {
+			$product->{$field} = $value;
+			$product->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid product ID.");
+	}
 	public static function addheading ($site_post_ID, $section_ID) {
 		$section = new section ($section_ID);
 		if ($section->ID > 0) {
@@ -57,6 +126,16 @@ class admin extends XOMBO\controller {
 			static::redirect ("/site/post/" . $site_post_ID);
 		}
 		throw new exception ("Invalid section.");
+	}
+	public static function updateheading ($site_post_ID, $heading_ID) {
+		$content = array_key_exists ("content", $_POST) ? $_POST['content'] : "";
+		$heading = new heading ($heading_ID);
+		if ($heading->ID > 0) {
+			$heading->content = $content;
+			$heading->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid heading.");
 	}
 	public static function addp ($site_post_ID, $section_ID) {
 		$section = new section ($section_ID);
@@ -66,6 +145,16 @@ class admin extends XOMBO\controller {
 		}
 		throw new exception ("Invalid section.");
 	}
+	public static function updatep ($site_post_ID, $p_ID) {
+		$content = array_key_exists ("content", $_POST) ? $_POST['content'] : "";
+		$p = new p ($p_ID);
+		if ($p->ID > 0) {
+			$p->content = $content;
+			$p->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid p.");
+	}
 	public static function addaside ($site_post_ID, $section_ID) {
 		$section = new section ($section_ID);
 		if ($section->ID > 0) {
@@ -74,6 +163,16 @@ class admin extends XOMBO\controller {
 		}
 		throw new exception ("Invalid section.");	
 	}
+	public static function updateaside ($site_post_ID, $aside_ID) {
+		$content = array_key_exists ("content", $_POST) ? $_POST['content'] : "";
+		$aside = new aside ($aside_ID);
+		if ($aside->ID > 0) {
+			$aside->content = $content;
+			$aside->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid aside.");
+	}
 	public static function addfigure ($site_post_ID, $section_ID) {
 		$section = new section ($section_ID);
 		if ($section->ID > 0) {
@@ -81,6 +180,22 @@ class admin extends XOMBO\controller {
 			static::redirect ("/site/post/" . $site_post_ID);
 		}
 		throw new exception ("Invalid section.");	
+	}
+	public static function addasideimage ($site_post_ID, $aside_ID) {
+		$aside = new aside ($aside_ID);
+		if ($aside->ID > 0) {
+			$aside_image = $aside->createImage ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid aside.");
+	}
+	public static function addasideauthor ($site_post_ID, $aside_ID) {
+		$aside = new aside ($aside_ID);
+		if ($aside->ID > 0) {
+			$aside_image = $aside->createAuthor ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid aside.");		
 	}
 	public static function addnav ($site_post_ID, $section_ID) {
 		$section = new section ($section_ID);
@@ -173,6 +288,16 @@ class admin extends XOMBO\controller {
 		$li->strikeout = $li->strikeout ? 0 : 1;
 		$li->save ();
 		static::redirect ("/site/post/" . $site_post_ID);	
+	}
+	public static function updateli ($site_post_ID, $li_ID) {
+		$content = array_key_exists ("content", $_POST) ? $_POST['content'] : '';
+		$li = new li ($li_ID);
+		if ($li->ID > 0) {
+			$li->content = $content;
+			$li->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid li.");		
 	}
 	public static function summaryp ($site_post_ID, $p_ID) {
 		$p = new p ($p_ID);

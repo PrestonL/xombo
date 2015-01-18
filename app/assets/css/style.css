@@ -29,10 +29,6 @@ body {
     -ms-user-select: inherit;
     user-select: inherit;
 }
-sup {
-	display: block;
-	clear: both;
-}
 a {
 	color: inherit;
 }
@@ -50,6 +46,88 @@ strong, h3, h4 {
 }
 strike {
 	text-decoration: line-through;
+}
+form {
+	font-size: 10px;
+}
+section > form {
+	width: 50%;
+}
+@media (max-width: 460px) {
+	section > form {
+		width: 95%;
+	}
+}
+article > form, figure > form, aside > form, section.event form {
+	width: 100%;
+}
+dd form input[type="text"] {
+	width: 90%;
+	clear: both;
+}
+dd:not(:first-of-type) form input[type="text"] {
+	margin-top: -1em;
+}
+dd form input[type="text"] + input[type="submit"] {
+	float: right;
+}
+sup {
+	display: block;
+	clear: both;
+	font-size: 12px;
+	line-height: 2em;
+}
+sup a {
+	color: #CCCCCC;
+}
+section > form + sup, aside > form + sup {
+	position: relative;
+	top: -2.5em;
+}
+input[type="text"], input[type="submit"], textarea {
+	border: 1px solid #C0C0C0;
+	border-radius: 6px;
+	padding: .5em;
+	padding-left: 1em;
+	padding-right: 1em;
+	margin: 1em;
+	line-height: 2em;
+}
+input[type="text"], textarea {
+	-moz-box-shadow: inset 4px 4px 4px -2px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset 4px 4px 4px -2px rgba(0, 0, 0, 0.1);
+	box-shadow: inset 4px 4px 4px -2px rgba(0, 0, 0, 0.1);
+}
+input[type="text"].strikeout {
+	text-decoration: line-through;
+}
+input[type="submit"] {
+	-moz-box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	-webkit-box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	box-shadow: inset -4px -4px 4px -2px rgba(0, 0, 0, 0.1);
+	background: #CCCCCC;
+	padding-left: 2em;
+	padding-right: 2em;
+}
+input[type="text"] {
+	width: 65%;
+}
+aside > form input[type="text"] + input[type="submit"], figure > form input[type="text"] + input[type="submit"], textarea + input[type="submit"] {
+	float: right;
+	margin-right: -1em;
+}
+textarea {
+	width: 100%;
+	resize: none;
+}
+section > form textarea {
+	height: 250px;
+}
+aside > form textarea, figure > form textarea {
+	height: 125px;
+}
+textarea.p-summary {
+	background: #FFFFDD;
 }
 body > header, main > article, body > footer, body > nav {
 	text-align: left;
@@ -162,6 +240,10 @@ header hr, article hr, footer hr, nav hr, details hr {
 article h3 {
 	display: block;
 	font-size: 200%;
+	line-height: 1.5em;
+}
+article h3 a {
+	line-height: inherit;
 }
 article h3:empty, article h3 *:empty, article section h4:empty, article section h4 *:empty {
 	display: none;
@@ -178,6 +260,7 @@ article section h4 {
 article section p {
 	font-size: 150%;
 	line-height: 150%;
+	max-width: 760px;
 }
 article section p a {
 	border-bottom: 1px dotted #CECECE;
@@ -222,7 +305,7 @@ article section aside, article section nav, article section figure {
 	float: right;
 	clear: right;
 	width: 40%;
-	min-width: 120px;
+	min-width: 200px;
 	max-width: 320px;
 	margin: 2em;
 	padding: 1em;
@@ -241,6 +324,7 @@ article section aside h5, article section nav h5, article section figure figcapt
 article section aside h5:first-child {
 	font-size: 150%;
 	font-weight: bold;
+	line-height: 1.5em;
 }
 article section aside h5:first-child:before {
 	content: '"';
