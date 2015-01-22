@@ -100,6 +100,32 @@ class admin extends XOMBO\controller {
 		}
 		throw new exception ("Invalid location ID.");
 	}
+	public static function updatelocationaddress ($site_post_ID, $location_ID) {
+		$address1 = array_key_exists ("address1", $_POST) ? $_POST["address1"] : "";
+		$address2 = array_key_exists ("address2", $_POST) ? $_POST["address2"] : "";
+		$pobox = array_key_exists ("pobox", $_POST) ? $_POST["pobox"] : "";
+		$locality = array_key_exists ("locality", $_POST) ? $_POST["locality"] : "";
+		$region = array_key_exists ("region", $_POST) ? $_POST["region"] : "";
+		$postalcode = array_key_exists ("postalcode", $_POST) ? $_POST["postalcode"] : "";
+		$country = array_key_exists ("country", $_POST) ? $_POST["country"] : "";
+		$latitude = array_key_exists ("latitude", $_POST) ? $_POST["latitude"] : "";
+		$longitude = array_key_exists ("longitude", $_POST) ? $_POST["longitude"] : "";
+		$location = new location ($location_ID);
+		if ($location->ID > 0) {
+			$location->address1 = $address1;
+			$location->address2 = $address2;
+			$location->pobox = $pobox;
+			$location->locality = $locality;
+			$location->region = $region;
+			$location->postalcode = $postalcode;
+			$location->country = $country;
+			$location->latitude = $latitude;
+			$location->longitude = $longitude;
+			$location->save ();
+			static::redirect ("/site/post/" . $site_post_ID);
+		}
+		throw new exception ("Invalid location ID.");	
+	}
 	public static function addproduct ($site_post_ID) {
 		$site_post = new site_post ($site_post_ID); 
 		if ($site_post->ID > 0) {
@@ -146,10 +172,10 @@ class admin extends XOMBO\controller {
 		throw new exception ("Invalid section.");
 	}
 	public static function updatep ($site_post_ID, $p_ID) {
-		$content = array_key_exists ("content", $_POST) ? $_POST['content'] : "";
+		$span = array_key_exists ("span", $_POST) ? $_POST['span'] : "";
 		$p = new p ($p_ID);
 		if ($p->ID > 0) {
-			$p->content = $content;
+			$p->span = $span;
 			$p->save ();
 			static::redirect ("/site/post/" . $site_post_ID);
 		}

@@ -119,11 +119,11 @@
 					<xsl:attribute name="action">/admin/updatep/<xsl:value-of select="../../../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
 					<xsl:attribute name="method">POST</xsl:attribute>
 					<textarea>
-						<xsl:attribute name="name">content</xsl:attribute>
+						<xsl:attribute name="name">span</xsl:attribute>
 						<xsl:if test="summary and summary != 'false' and summary != 0">
 							<xsl:attribute name="class">p-summary</xsl:attribute>
 						</xsl:if>
-						<xsl:value-of select="content" />
+						<xsl:value-of select="span" />
 					</textarea>
 					<input type="submit" value="Save" />
 				</form>
@@ -151,7 +151,7 @@
 					<xsl:if test="summary and summary != 'false' and summary != 0">
 						<xsl:attribute name="class">p-summary</xsl:attribute>
 					</xsl:if>
-					<xsl:value-of select="content" />
+					<xsl:value-of select="span" disable-output-escaping="yes" />
 					<xsl:if test="summary and summary != 'false' and summary != 0">
 						<a>
 							<xsl:attribute name="class">readmore</xsl:attribute>
@@ -573,6 +573,67 @@
 	</xsl:template>
 	<xsl:template match="location" mode="inner">
 		<xsl:choose>
+			<xsl:when test="/response/result/site/admin=1">
+				<form>
+					<xsl:attribute name="action">/admin/updatelocationaddress/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+					<xsl:attribute name="method">POST</xsl:attribute>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">address1</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="address1" /></xsl:attribute>
+						<xsl:attribute name="placeholder">address1</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">address2</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="address2" /></xsl:attribute>
+						<xsl:attribute name="placeholder">address2</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">pobox</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="pobox" /></xsl:attribute>
+						<xsl:attribute name="placeholder">pobox</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">locality</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="locality" /></xsl:attribute>
+						<xsl:attribute name="placeholder">locality</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">region</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="region" /></xsl:attribute>
+						<xsl:attribute name="placeholder">region</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">postalcode</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="postalcode" /></xsl:attribute>
+						<xsl:attribute name="placeholder">postalcode</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">country</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="country" /></xsl:attribute>
+						<xsl:attribute name="placeholder">country</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">latitude</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="latitude" /></xsl:attribute>
+						<xsl:attribute name="placeholder">latitude</xsl:attribute>
+					</input>
+					<input>
+						<xsl:attribute name="type">text</xsl:attribute>
+						<xsl:attribute name="name">longitude</xsl:attribute>
+						<xsl:attribute name="value"><xsl:value-of select="longitude" /></xsl:attribute>
+						<xsl:attribute name="placeholder">longitude</xsl:attribute>
+					</input>
+					<input type="submit" value="Save" />
+				</form>
+			</xsl:when>
 			<xsl:when test="address1 or address2 or pobox or locality or region or postalcode or country">
 				<dt>
 					Address
@@ -798,7 +859,24 @@
 	</xsl:template>
 	<xsl:template match="product">
 		<section class="h-product">
-			<h4 class="p-name"><xsl:value-of select="name" /></h4>
+		
+			<xsl:choose>
+				<xsl:when test="/response/result/site/admin=1">
+					<form>
+						<xsl:attribute name="action">/admin/updateproduct/name/<xsl:value-of select="../../site_post_ID" />/<xsl:value-of select="ID" /></xsl:attribute>
+						<xsl:attribute name="method">POST</xsl:attribute>
+						<input>
+							<xsl:attribute name="type">text</xsl:attribute>
+							<xsl:attribute name="name">name</xsl:attribute>
+							<xsl:attribute name="value"><xsl:value-of select="name" /></xsl:attribute>
+						</input>
+						<input type="submit" value="Save" />
+					</form>
+				</xsl:when>
+				<xsl:otherwise>
+					<h4 class="p-name"><xsl:value-of select="name" /></h4>
+				</xsl:otherwise>
+			</xsl:choose>
 			<dl>
 				<dt>
 					Description

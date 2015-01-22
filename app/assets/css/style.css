@@ -21,7 +21,7 @@ body {
 	cursor: inherit;
 	font-size: inherit;
 	font-weight: inherit;
-	line-height: 1em;
+	line-height: inherit;
     -webkit-touch-callout: inherit;
     -webkit-user-select: inherit;
     -khtml-user-select: inherit;
@@ -669,8 +669,9 @@ main:not(:only-of-type) section.h-product dl dd:first-of-type {
 	display: none;
 }
 main:not(:only-of-type):not(:last-of-type) article > hr:last-of-type {
-	border-bottom: 5px double #F0F0F0;
+	border-bottom: 5px double #FAFAFA;
 	margin-top: 3em;
+	max-width: 760px;
 }
 main:not(:only-of-type) section.post:not(:only-of-type) > .p-summary:before {
 	content: 'Summary:';

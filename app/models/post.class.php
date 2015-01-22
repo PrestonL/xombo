@@ -23,7 +23,7 @@ class post extends XOMBO\dbModelDefaults {
 				$site_post = new site_post ($site_post_ID);
 				$this->published = $site_post->published;
 			}
-			$this->url = "/site/post/" . $site_post_ID;
+			$this->url = "/site/post/" . $site_post_ID . (empty ($this->slug) ? "/" . str_replace (" ", "-", strtolower ($this->name)) : "/" . $this->slug);
 			$this->authors = post_author::select (array ('post_ID' => $this->ID))->bind (
 				function ($obj) {
 					return new author ($obj->author_ID);
